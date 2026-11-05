@@ -157,24 +157,6 @@ def site_jsonld():
 
 # ---------- page shell ----------
 
-SEARCH_ICON = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
-               'stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/>'
-               '<path d="M20 20l-3.5-3.5"/></svg>')
-
-MENU_JS = """
-(function(){
-  var btn=document.getElementById('menuBtn'),nav=document.getElementById('nav'),dd=document.getElementById('learn');
-  if(btn){btn.addEventListener('click',function(){var open=nav.classList.toggle('open');btn.setAttribute('aria-expanded',open);});}
-  document.addEventListener('click',function(e){
-    if(dd && dd.open && !dd.contains(e.target)) dd.open=false;
-  });
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){ if(dd) dd.open=false; if(nav) nav.classList.remove('open'); if(btn) btn.setAttribute('aria-expanded',false); }
-  });
-})();
-"""
-
-
 def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
     cur = active or path
     root = "/" if cur == "/" else "/" + cur.strip("/").split("/")[0] + "/"
@@ -182,30 +164,21 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
     def mark(t):
         return ' aria-current="page"' if t == root else ""
 
-    learn = "".join('<a href="%s"%s>%s</a>' % (link(t, path), mark(t), esc_text(l))
-                    for t, l in [("/resources/", "Resources"), ("/articles/", "Articles"),
-                                 ("/clinical-notes/", "Clinical Notes"), ("/study-resources/", "Study Resources")])
-    top = "".join('<a href="%s"%s>%s</a>' % (link(t, path), mark(t), esc_text(l))
-                  for t, l in [("/research/", "Research"), ("/news/", "News"), ("/about/", "About")])
     canonical = SITE_URL + ("" if path == "/" else path)
     demo_html = ('<div class="demo-banner" role="note"><strong>Demonstration content.</strong> '
                  + esc_text(DEMO_NOTE) + "</div>") if demo else ""
-    explore = "".join('<li><a href="%s">%s</a></li>' % (link(t, path), esc_text(l)) for t, l in NAV)
-    legal = "".join('<li><a href="%s">%s</a></li>' % (link(t, path), l)
-                    for t, l in [("/privacy/", "Privacy"), ("/disclaimer/", "Disclaimer"), ("/contact/", "Contact")])
     favicon = link("/assets/favicon.svg", path)
-    css_link = link("/assets/style.css", path) + "?v=2"
+    css_link = link("/assets/style.css", path) + "?v=3"
     home_link = link("/", path)
     search_link = link("/search/", path)
-    exam_link = link("/examinations/", path)
     out = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
-<meta name="theme-color" content="#07383f">
+<meta name="theme-color" content="#0F161C">
 <link rel="canonical" href="{canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{SITE_NAME}">
@@ -214,58 +187,63 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
 <meta property="og:url" content="{canonical}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="{favicon}">
 <link rel="stylesheet" href="{css_link}">
 {site_jsonld()}{extra_head}
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
-  <div class="wrap bar">
-    <a class="logo" href="{home_link}">anaesthesia<span>.ng</span></a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
-    <nav class="nav" id="nav" aria-label="Main">
-      <details class="dd" id="learn">
-        <summary>Learn</summary>
-        <div class="dd-panel">{learn}</div>
-      </details>
-      {top}
-      <a class="search-link" href="{search_link}" aria-label="Search the site">{SEARCH_ICON}<span>Search</span></a>
-      <a class="btn-nav" href="{exam_link}"{mark("/examinations/")}>Exam preparation</a>
+  <div class="wrap header-grid">
+    <a class="wordmark" href="{home_link}" aria-label="anaesthesia.ng home">anaesthesia<span>.ng</span></a>
+
+    <form class="search" role="search" action="{search_link}" method="get">
+      <label class="sr-only" for="site-search">Search anaesthesia.ng</label>
+      <input id="site-search" type="search" name="q" placeholder="Search topics, past questions, syllabus" autocomplete="off" enterkeyhint="search">
+      <button type="submit">Search</button>
+    </form>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li class="nav-search"><a href="{search_link}"{mark("/search/")}>Search</a></li>
+        <li><a href="{link("/resources/", path)}"{mark("/resources/")}>Resources</a></li>
+        <li><a href="{link("/examinations/", path)}"{mark("/examinations/")}>Exams</a></li>
+        <li><a href="{link("/research/", path)}"{mark("/research/")}>Research</a></li>
+        <li><a href="{link("/about/", path)}"{mark("/about/")}>About</a></li>
+      </ul>
     </nav>
   </div>
 </header>
 <main id="main">
-{demo_html}{body}
+{demo_html}<div class="wrap page-wrap">{body}</div>
 </main>
-<footer>
+
+<footer class="site-footer">
   <div class="wrap">
-    <div class="foot">
+    <div class="footer-grid">
       <div>
-        <a class="logo" href="{home_link}">anaesthesia<span>.ng</span></a>
-        <p>{esc_text(TAGLINE)}</p>
-        <form class="signup" action="#" method="post">
-          <label for="email" style="position:absolute;left:-999px">Email address</label>
-          <input id="email" name="email" type="email" placeholder="Your email address" required>
-          <button class="btn btn-amber" type="submit">Subscribe</button>
-        </form>
-        <p style="margin-top:8px;font-size:.9rem">Exam tips and calls for papers, sent occasionally.</p>
+        <a class="wordmark" href="{home_link}" aria-label="anaesthesia.ng home">anaesthesia<span>.ng</span></a>
+        <p class="footer-about">An independent academic knowledge hub for anaesthesia in Nigeria and West Africa.</p>
       </div>
-      <div>
-        <h3>Explore</h3>
-        <ul class="cols">{explore}</ul>
-      </div>
-      <div>
-        <h3>Legal</h3>
-        <ul class="cols" style="columns:1">{legal}</ul>
-      </div>
+
+      <nav class="footer-links" aria-label="Footer">
+        <a href="{link("/about/", path)}">About</a>
+        <a href="{link("/editorial-policy/", path)}">Editorial policy</a>
+        <a href="{link("/contact/", path)}">Contact</a>
+        <a href="{link("/articles/", path)}">Articles</a>
+        <a href="{link("/clinical-notes/", path)}">Clinical notes</a>
+        <a href="{link("/news/", path)}">News</a>
+        <a href="{link("/study-resources/", path)}">Study resources</a>
+        <a href="{link("/privacy/", path)}">Privacy</a>
+        <a href="{link("/disclaimer/", path)}">Disclaimer</a>
+        <a href="https://github.com/RolandDecker/anaesthesia-ng">Source on GitHub</a>
+      </nav>
     </div>
-    <p class="legal">&copy; 2026 anaesthesia.ng. Educational information only; it does not replace
-    clinical judgement, institutional protocols or specialist consultation.</p>
+
+    <p class="footer-note">&copy; 2026 anaesthesia.ng. Independent and not affiliated with WACS or NPMCN. This site is a static build maintained in a GitHub repository; the repository holds the source and change history.</p>
   </div>
 </footer>
-<script>{MENU_JS}</script>
 </body>
 </html>
 """

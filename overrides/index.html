@@ -1,416 +1,577 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-NG">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>anaesthesia.ng | Advancing Anaesthesia Through Knowledge.</title>
-<meta name="description" content="The academic and professional knowledge hub for anaesthesia in Nigeria and Africa: articles, clinical notes, examination guidance and research resources.">
-<meta name="theme-color" content="#07383f">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>anaesthesia.ng | Academic knowledge hub for anaesthesia in Nigeria and West Africa</title>
+<meta name="description" content="An independent, human-reviewed academic hub for anaesthesia trainees, practitioners and educators in Nigeria and West Africa. Study frameworks for WACS, NPMCN and Diploma examinations, clinical resources and research guidance.">
+<link rel="canonical" href="https://anaesthesia.ng/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="anaesthesia.ng">
+<meta property="og:title" content="anaesthesia.ng | Academic knowledge hub for anaesthesia in Nigeria and West Africa">
+<meta property="og:description" content="An independent, human-reviewed academic hub for anaesthesia trainees, practitioners and educators in Nigeria and West Africa. Study frameworks for WACS, NPMCN and Diploma examinations, clinical resources and research guidance.">
+<meta property="og:url" content="https://anaesthesia.ng/">
+<meta name="theme-color" content="#0F161C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A5A62'/%3E%3Cpath d='M4 23h6l3-13h7l3 13h5' fill='none' stroke='%23EBEFF2' stroke-width='3'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --deep:#07383f;
-  --deep-2:#0a4a53;
-  --teal:#0e8a98;
-  --teal-ink:#0a6b77;
-  --amber:#f2a93b;
-  --amber-ink:#8a4f00;
-  --ink:#0e2a30;
-  --muted:#42565b;
-  --bg:#f4f8f8;
-  --bg-alt:#e8f0f1;
-  --surface:#ffffff;
-  --line:#cfdcde;
-  --on-deep:#e6f2f3;
-  --on-deep-muted:#a9c6ca;
-  --serif:"Fraunces",Georgia,"Times New Roman",serif;
-  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  --wrap:1120px;
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --bg:#071e22;
-    --bg-alt:#0b2a30;
-    --surface:#0f343b;
-    --ink:#e8f3f4;
-    --muted:#a7c0c4;
-    --line:#1d4750;
-    --teal-ink:#5cc6d3;
-    --amber-ink:#f2b95c;
-  }
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased}
-img,svg{max-width:100%}
-a{color:var(--teal-ink);text-underline-offset:3px}
-a:hover{color:var(--ink)}
-:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:4px}
-.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
-.skip{position:absolute;left:-999px;top:8px;background:var(--amber);color:#1b1200;padding:8px 14px;border-radius:6px;z-index:100}
-.skip:focus{left:8px}
-h1,h2,h3{font-family:var(--serif);line-height:1.15;margin:0;letter-spacing:-.01em}
-h2{font-size:clamp(1.6rem,3vw,2.1rem);font-weight:600}
-h3{font-size:1.2rem;font-weight:600}
-p{margin:0}
+/* ==========================================================================
+   anaesthesia.ng homepage
+   Colours (three only): ink, paper, accent
+   Type scale: 14 / 16 / 20 / 28 / 40 / 56
+   Spacing: 8-point grid
+   ========================================================================== */
 
-/* Header */
-.site-header{position:sticky;top:0;z-index:50;background:var(--deep);color:var(--on-deep);border-bottom:1px solid rgba(255,255,255,.08)}
-.bar{display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:16px}
-.logo{font-family:var(--serif);font-weight:700;font-size:1.3rem;color:#fff;text-decoration:none;letter-spacing:-.01em}
-.logo span{color:#7fd3dd}
-.nav{display:flex;align-items:center;gap:4px}
-.nav a,.nav summary{color:var(--on-deep);text-decoration:none;padding:10px 12px;border-radius:8px;font-size:.95rem;font-weight:500;cursor:pointer;list-style:none;display:inline-block}
-.nav summary::-webkit-details-marker{display:none}
-.nav a:hover,.nav summary:hover{background:rgba(255,255,255,.1);color:#fff}
-.nav a[aria-current="page"]{background:rgba(255,255,255,.14);color:#fff}
-.nav summary::after{content:"";display:inline-block;width:6px;height:6px;margin-left:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-3px) rotate(45deg)}
-.nav .btn-nav{background:var(--amber);color:#1b1200;font-weight:600;margin-left:6px}
-.nav .btn-nav:hover{background:#ffc15e;color:#1b1200}
-.dd{position:relative}
-.dd-panel{position:absolute;top:calc(100% + 6px);left:0;min-width:210px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
-.dd-panel a{display:block;color:var(--ink);padding:10px 12px}
-.dd-panel a:hover{background:var(--bg-alt);color:var(--ink)}
-.search-link{display:inline-flex;align-items:center;gap:6px}
-.search-link svg{width:18px;height:18px}
-.menu-btn{display:none;background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:8px 14px;font:inherit;font-weight:500;cursor:pointer}
+:root {
+  --ink: #0F161C;
+  --paper: #EBEFF2;
+  --accent: #0A5A62;
 
-/* Hero */
-.hero{background:linear-gradient(180deg,var(--deep) 0%,var(--deep-2) 100%);color:#fff;position:relative;overflow:hidden;padding:72px 0 0}
-.hero-inner{position:relative;z-index:2;padding-bottom:36px}
-.hero h1{font-size:clamp(2.2rem,5.6vw,3.7rem);font-weight:600;max-width:17ch}
-.hero .lede{color:var(--on-deep);max-width:56ch;margin-top:18px;font-size:1.15rem}
-.search{display:flex;gap:10px;margin-top:30px;max-width:640px}
-.search input{flex:1;min-width:0;padding:15px 18px;border-radius:10px;border:2px solid transparent;font:inherit;background:#fff;color:#0e2a30}
-.search input::placeholder{color:#5b6f73}
-.search input:focus{outline:none;border-color:var(--amber)}
-.btn{display:inline-block;border:0;border-radius:10px;padding:14px 22px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;text-align:center}
-.btn-amber{background:var(--amber);color:#1b1200}
-.btn-amber:hover{background:#ffc15e;color:#1b1200}
-.btn-teal{background:var(--teal);color:#fff}
-.btn-teal:hover{background:var(--teal-ink);color:#fff}
-.quick{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:18px;align-items:center;color:var(--on-deep-muted);font-size:.95rem}
-.quick a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 14px}
-.quick a:hover{background:rgba(255,255,255,.12)}
-.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,.16);max-width:860px}
-.facts strong{display:block;font-family:var(--serif);font-size:1.9rem;font-weight:600;line-height:1.1;color:#fff}
-.facts span{display:block;margin-top:6px;color:var(--on-deep-muted);font-size:.95rem;line-height:1.4}
-.trace{display:block;width:100%;height:auto;margin-top:-6px;position:relative;z-index:1}
-.trace path{fill:none;stroke:var(--amber);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}
-@media (prefers-reduced-motion:no-preference){
-  .trace path{animation:draw 3.2s ease-out 0.2s both}
-  @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  --soft: #0F161C; /* secondary text; refined below where color-mix is supported */
+
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --gutter: 16px;
 }
 
-/* Sections */
-section{padding:72px 0}
-.alt{background:var(--bg-alt)}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
-.sec-head p{color:var(--muted);max-width:52ch}
-
-/* Start here: one panel, four cells */
-.start{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.start a{display:block;padding:26px 24px 28px;text-decoration:none;color:var(--ink);border-right:1px solid var(--line);transition:background .15s}
-.start a:last-child{border-right:0}
-.start a:hover{background:var(--bg-alt)}
-.start svg{width:34px;height:34px;color:var(--teal-ink);margin-bottom:16px}
-.start h3{margin-bottom:8px}
-.start p{color:var(--muted);font-size:.98rem;line-height:1.55}
-
-/* Articles */
-.articles{display:grid;grid-template-columns:1.35fr 1fr;gap:20px}
-.stack{display:grid;gap:20px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
-.card:hover{border-color:var(--teal);color:var(--ink)}
-.card h3{font-size:1.25rem}
-.card p{color:var(--muted);font-size:.98rem}
-.card time{color:var(--muted);font-size:.9rem}
-.lead{background:var(--deep);color:#fff;border-color:var(--deep);padding:34px;justify-content:flex-end;min-height:360px;position:relative;overflow:hidden}
-.lead:hover{color:#fff;border-color:var(--amber)}
-.lead h3{font-size:clamp(1.6rem,3vw,2.15rem);max-width:20ch}
-.lead p,.lead time{color:var(--on-deep)}
-.lead::before{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;border:1px solid rgba(255,255,255,.14);box-shadow:0 0 0 36px rgba(255,255,255,.03),0 0 0 72px rgba(255,255,255,.02)}
-.tag{align-self:flex-start;font-size:.85rem;font-weight:600;padding:4px 12px;border-radius:999px;background:#d9eef1;color:#064a54}
-.tag.research{background:#fbe7c2;color:#6b3b00}
-.lead .tag{background:var(--amber);color:#1b1200}
-.more{margin-top:26px;display:inline-block;font-weight:600}
-
-/* Exams + research */
-.two{display:grid;grid-template-columns:1fr 1fr;gap:56px}
-.two > div > p{color:var(--muted);margin:14px 0 22px;max-width:50ch}
-.routes{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-.routes li{border-bottom:1px solid var(--line)}
-.routes a{display:flex;justify-content:space-between;align-items:center;padding:16px 4px;text-decoration:none;color:var(--ink);font-weight:600}
-.routes a:hover{color:var(--teal-ink);background:var(--bg-alt)}
-.routes a::after{content:"";width:9px;height:9px;border-right:2px solid var(--teal-ink);border-top:2px solid var(--teal-ink);transform:rotate(45deg);margin-right:6px}
-
-/* About */
-.about{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;max-width:860px}
-.avatar{width:132px;height:132px;border-radius:50%;background:var(--deep);color:#fff;display:grid;place-items:center;font-family:var(--serif);font-size:2.4rem;font-weight:600;border:4px solid var(--amber)}
-.about h2{margin-bottom:12px}
-.about p{color:var(--muted);max-width:60ch}
-.about .who{color:var(--ink);font-weight:600;margin-top:14px}
-.about .btn{margin-top:20px}
-
-/* Footer */
-footer{background:var(--deep);color:var(--on-deep);padding:56px 0 28px}
-.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
-footer .logo{display:inline-block;margin-bottom:10px}
-footer p{color:var(--on-deep-muted);max-width:38ch}
-footer h3{font-family:var(--sans);font-size:1rem;font-weight:600;color:#fff;margin-bottom:12px}
-.cols{columns:2;column-gap:28px;list-style:none;margin:0;padding:0}
-.cols li{break-inside:avoid;margin-bottom:8px}
-footer a{color:var(--on-deep);text-decoration:none}
-footer a:hover{color:#fff;text-decoration:underline}
-.signup{margin-top:20px;display:flex;gap:8px;max-width:380px}
-.signup input{flex:1;min-width:0;padding:11px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font:inherit}
-.signup input::placeholder{color:#a9c6ca}
-.signup .btn{padding:11px 16px}
-.legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.14);font-size:.9rem;color:var(--on-deep-muted)}
-
-/* Responsive */
-@media (max-width:960px){
-  .menu-btn{display:inline-block}
-  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--deep);flex-direction:column;align-items:stretch;padding:10px 20px 20px;border-bottom:1px solid rgba(255,255,255,.12);gap:2px}
-  .nav.open{display:flex}
-  .nav a,.nav summary{padding:13px 12px;font-size:1rem}
-  .dd-panel{position:static;box-shadow:none;background:rgba(255,255,255,.06);border:0;margin:2px 0 6px}
-  .dd-panel a{color:var(--on-deep)}
-  .dd-panel a:hover{background:rgba(255,255,255,.1);color:#fff}
-  .nav .btn-nav{margin:8px 0 0;text-align:center}
-  .start{grid-template-columns:1fr 1fr}
-  .start a:nth-child(2){border-right:0}
-  .start a:nth-child(-n+2){border-bottom:1px solid var(--line)}
-  .articles{grid-template-columns:1fr}
-  .lead{min-height:280px}
-  .two{grid-template-columns:1fr;gap:44px}
-  .foot{grid-template-columns:1fr 1fr}
-  .foot > div:first-child{grid-column:1 / -1}
+@supports (color: color-mix(in srgb, red, blue)) {
+  :root { --soft: color-mix(in srgb, var(--ink) 82%, var(--paper)); }
 }
-@media (max-width:600px){
-  section{padding:52px 0}
-  .hero{padding-top:48px}
-  .search{flex-direction:column}
-  .facts{grid-template-columns:1fr;gap:18px}
-  .start{grid-template-columns:1fr}
-  .start a{border-right:0;border-bottom:1px solid var(--line)}
-  .start a:last-child{border-bottom:0}
-  .about{grid-template-columns:1fr;gap:20px}
-  .foot{grid-template-columns:1fr}
-  .signup{flex-direction:column}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 16px/24px var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+a {
+  color: inherit;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+a:hover { text-decoration-thickness: 3px; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.on-dark :focus-visible,
+.on-accent :focus-visible { outline-color: var(--paper); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip {
+  position: absolute; left: 8px; top: -80px; z-index: 30;
+  padding: 16px 24px; background: var(--ink); color: var(--paper);
+  font-weight: 600;
+}
+.skip:focus { top: 8px; }
+
+.wrap { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: var(--gutter); }
+
+section[id] { scroll-margin-top: 96px; }
+
+/* Shared pieces ---------------------------------------------------------- */
+
+.go {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+.go::after { content: "\2192"; content: "\2192" / ""; margin-left: 8px; }
+.on-dark .go, .on-accent .go { color: var(--paper); }
+
+.btn {
+  display: inline-flex; align-items: center; min-height: 56px; padding: 0 24px;
+  background: var(--accent); color: var(--paper);
+  border: 2px solid var(--accent); border-radius: 0;
+  font: 600 16px/24px var(--body); text-decoration: none; cursor: pointer;
+}
+.btn:hover { background: var(--ink); border-color: var(--ink); text-decoration: none; }
+
+.section { padding-block: 64px; }
+
+.section-head {
+  display: grid; gap: 16px;
+  padding-top: 24px; margin-bottom: 40px;
+  border-top: 2px solid currentColor;
+}
+h2 { font: 600 28px/36px var(--display); letter-spacing: -0.01em; }
+.section-head p { max-width: 56ch; }
+
+.on-dark   { background: var(--ink);    color: var(--paper); --soft: var(--paper); }
+.on-accent { background: var(--accent); color: var(--paper); --soft: var(--paper); }
+@supports (color: color-mix(in srgb, red, blue)) {
+  .on-dark   { --soft: color-mix(in srgb, var(--paper) 80%, var(--ink)); }
+  .on-accent { --soft: color-mix(in srgb, var(--paper) 92%, var(--accent)); }
+}
+
+/* 1. Header -------------------------------------------------------------- */
+
+.site-header { background: var(--paper); border-bottom: 2px solid var(--ink); }
+
+.header-grid { display: grid; gap: 16px; padding-block: 16px; }
+
+.wordmark {
+  justify-self: start;
+  font: 600 28px/32px var(--display);
+  letter-spacing: -0.015em;
+  text-decoration: none;
+}
+.wordmark span { color: var(--accent); }
+
+.search { display: flex; width: 100%; max-width: 720px; }
+.search input {
+  flex: 1; min-width: 0; height: 56px; padding: 0 16px;
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--ink); border-right: 0; border-radius: 0;
+  font: 400 16px/24px var(--body);
+  -webkit-appearance: none; appearance: none;
+}
+.search input::placeholder { color: var(--soft); opacity: 1; }
+.search input:focus-visible { outline: 3px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+.search button {
+  height: 56px; padding: 0 24px;
+  background: var(--accent); color: var(--paper);
+  border: 2px solid var(--accent); border-radius: 0;
+  font: 600 16px/24px var(--body); cursor: pointer;
+}
+.search button:hover { background: var(--ink); border-color: var(--ink); }
+
+/* Navigation: fixed to the bottom edge on phones (thumb reach) */
+.site-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--ink);
+}
+.site-nav ul { display: grid; grid-template-columns: repeat(5, 1fr); }
+.site-nav a {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 56px; padding: 0 4px;
+  color: var(--paper); font-size: 14px; line-height: 24px; font-weight: 600;
+  text-decoration: none;
+}
+.site-nav a:hover { background: var(--accent); }
+.site-nav a:focus-visible { outline: 3px solid var(--paper); outline-offset: -6px; }
+
+/* 2. Hero ---------------------------------------------------------------- */
+
+.hero { padding-top: 48px; }
+.hero-grid { display: grid; gap: 32px; }
+.hero h1 {
+  max-width: 18ch;
+  font: 600 40px/48px var(--display);
+  letter-spacing: -0.02em;
+}
+.lede { font-size: 20px; line-height: 28px; max-width: 48ch; }
+.hero-copy > p + p { margin-top: 16px; max-width: 56ch; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: 32px; }
+.starts { margin-top: 32px; font-size: 14px; line-height: 24px; }
+.starts p { font-weight: 600; margin-bottom: 8px; }
+.starts ul { display: flex; flex-wrap: wrap; gap: 0 24px; }
+
+.trace { display: block; width: 100%; height: 80px; margin-top: 64px; }
+.trace path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: miter; }
+.trace line { stroke: var(--ink); stroke-width: 1; }
+
+/* 3. Entry points -------------------------------------------------------- */
+
+.entries { border-top: 2px solid var(--ink); }
+.entry { padding: 32px 0; border-top: 1px solid var(--ink); }
+.entry:first-child { border-top: 0; }
+.entry h3 { font: 600 28px/36px var(--display); letter-spacing: -0.01em; margin-bottom: 16px; }
+.entry p { margin-bottom: 24px; max-width: 36ch; }
+
+/* 4. Featured articles --------------------------------------------------- */
+
+.featured { display: grid; gap: 40px; }
+.side { display: grid; gap: 40px; align-content: start; }
+
+.meta {
+  display: flex; flex-wrap: wrap; gap: 0 16px; margin-bottom: 8px;
+  font-size: 14px; line-height: 24px;
+}
+.meta .cat { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.meta time { color: var(--soft); }
+
+.article h3 { font: 600 20px/28px var(--display); letter-spacing: -0.005em; margin-bottom: 8px; }
+.article h3 a { text-decoration: none; }
+.article h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+
+.side .article { padding-top: 24px; border-top: 1px solid var(--ink); }
+
+.lead { padding-top: 24px; border-top: 4px solid var(--accent); }
+.lead h3 { font-size: 28px; line-height: 36px; margin-bottom: 16px; }
+.lead p { font-size: 20px; line-height: 28px; max-width: 40ch; margin-bottom: 24px; }
+
+/* 5. Examination routes -------------------------------------------------- */
+
+.route { display: grid; gap: 16px; padding: 32px 0; border-top: 1px solid currentColor; }
+.route:last-child { border-bottom: 1px solid currentColor; }
+.route h3 { font: 600 28px/36px var(--display); letter-spacing: -0.01em; }
+.route .full { margin-top: 8px; font-size: 14px; line-height: 24px; color: var(--soft); }
+
+/* 6. Emerging capabilities ---------------------------------------------- */
+
+.caps { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.cap { padding: 24px 0; border-top: 1px solid var(--ink); }
+.cap:first-child { border-top: 0; }
+.cap h3 { font: 600 20px/28px var(--display); margin-bottom: 8px; }
+.cap p { font-size: 14px; line-height: 24px; color: var(--soft); max-width: 32ch; }
+.tag {
+  display: inline-flex; align-items: center; margin-top: 16px; padding: 0 8px;
+  border: 1px solid var(--ink); border-radius: 0;
+  font-size: 14px; line-height: 24px; font-weight: 600;
+}
+.tag::before { content: ""; width: 8px; height: 8px; margin-right: 8px; background: var(--accent); }
+
+/* 7. Trust --------------------------------------------------------------- */
+
+.trust-grid { display: grid; gap: 40px; padding-top: 24px; border-top: 2px solid currentColor; }
+.trust-copy p { font-size: 20px; line-height: 28px; max-width: 36ch; margin: 16px 0 24px; }
+.trust-list > div { padding: 16px 0 24px; border-top: 1px solid currentColor; }
+.trust-list > div:last-child { border-bottom: 1px solid currentColor; }
+.trust-list dt { font-weight: 600; margin-bottom: 8px; }
+.trust-list dd { max-width: 52ch; }
+
+/* 8. Footer -------------------------------------------------------------- */
+
+.site-footer { padding-block: 64px 48px; }
+.footer-grid { display: grid; gap: 32px; }
+.site-footer .wordmark { display: inline-block; margin-bottom: 16px; }
+.footer-about { max-width: 44ch; }
+.footer-links { display: grid; gap: 8px; font-weight: 600; }
+.footer-links a { display: inline-block; padding: 8px 0; }
+.footer-note {
+  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--ink);
+  font-size: 14px; line-height: 24px; color: var(--soft); max-width: 72ch;
+}
+
+/* Tablet ----------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+  :root { --gutter: 24px; }
+
+  .entries { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .entry { padding: 40px 24px 48px; border-top: 0; border-left: 1px solid var(--ink); }
+  .entry:first-child { padding-left: 0; border-left: 0; }
+
+  .caps { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .cap { padding: 24px; border-left: 1px solid var(--ink); }
+  .cap:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .cap:nth-child(2) { border-top: 0; }
+
+  .footer-grid { grid-template-columns: 6fr 3fr 3fr; }
+  .footer-links { grid-column: 2 / 4; grid-template-columns: 1fr 1fr; align-content: start; }
+}
+
+/* Desktop ---------------------------------------------------------------- */
+
+@media (min-width: 960px) {
+  :root { --gutter: 40px; }
+
+  body { padding-bottom: 0; }
+
+  h2 { font-size: 40px; line-height: 48px; }
+  .section { padding-block: 96px; }
+  .section-head { grid-template-columns: 5fr 7fr; gap: 40px; align-items: start; }
+  .section-head p { padding-top: 8px; }
+
+  .site-header { position: sticky; top: 0; z-index: 20; }
+  .header-grid { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 40px; }
+  .search { max-width: none; }
+
+  .site-nav { position: static; padding: 0; background: none; }
+  .site-nav ul { display: flex; gap: 32px; }
+  .site-nav a { min-height: 56px; padding: 0; color: var(--ink); font-size: 16px; }
+  .site-nav a:hover { background: none; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 8px; }
+  .site-nav a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+  .site-nav .nav-search { display: none; }
+
+  .hero { padding-top: 96px; }
+  .hero-grid { grid-template-columns: 7fr 5fr; gap: 64px; align-items: end; }
+  .hero h1 { font-size: 56px; line-height: 64px; }
+  .trace { margin-top: 96px; }
+
+  .entry { padding: 48px 40px 56px; }
+  .entry:first-child { padding-left: 0; }
+
+  .featured { grid-template-columns: 7fr 5fr; gap: 64px; }
+  .lead h3 { font-size: 40px; line-height: 48px; }
+  .side .article h3 { font-size: 28px; line-height: 36px; }
+
+  .route { grid-template-columns: 4fr 5fr 3fr; gap: 40px; align-items: start; padding: 40px 0; }
+  .route h3 { font-size: 40px; line-height: 48px; }
+  .route .go { justify-self: end; }
+
+  .caps { grid-template-columns: repeat(4, 1fr); }
+  .cap, .cap:nth-child(odd) { padding: 24px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cap:first-child { padding-left: 0; border-left: 0; }
+
+  .trust-grid { grid-template-columns: 5fr 7fr; gap: 64px; }
+
+  .footer-grid { grid-template-columns: 6fr 6fr; }
+  .footer-links { grid-column: auto; grid-template-columns: repeat(4, auto); justify-content: end; gap: 8px 40px; }
 }
 </style>
 </head>
 <body>
+
 <a class="skip" href="#main">Skip to content</a>
 
+<!-- 1. Header -->
 <header class="site-header">
-  <div class="wrap bar">
-    <a class="logo" href="./">anaesthesia<span>.ng</span></a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
-    <nav class="nav" id="nav" aria-label="Main">
-      <details class="dd" id="learn">
-        <summary>Learn</summary>
-        <div class="dd-panel">
-          <a href="resources/">Resources</a>
-          <a href="articles/">Articles</a>
-          <a href="clinical-notes/">Clinical Notes</a>
-          <a href="study-resources/">Study Resources</a>
-        </div>
-      </details>
-      <a href="research/">Research</a>
-      <a href="news/">News</a>
-      <a href="about/">About</a>
-      <a class="search-link" href="#search" aria-label="Search the site">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <span>Search</span>
-      </a>
-      <a class="btn-nav" href="examinations/">Exam preparation</a>
+  <div class="wrap header-grid">
+    <a class="wordmark" href="/" aria-label="anaesthesia.ng home">anaesthesia<span>.ng</span></a>
+
+    <form class="search" role="search" action="/search" method="get">
+      <label class="sr-only" for="site-search">Search anaesthesia.ng</label>
+      <input id="site-search" type="search" name="q" placeholder="Search topics, past questions, syllabus" autocomplete="off" enterkeyhint="search">
+      <button type="submit">Search</button>
+    </form>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li class="nav-search"><a href="#site-search">Search</a></li>
+        <li><a href="/resources">Resources</a></li>
+        <li><a href="/examinations">Exams</a></li>
+        <li><a href="/research">Research</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
     </nav>
   </div>
 </header>
 
 <main id="main">
-  <div class="hero">
-    <div class="wrap hero-inner">
-      <h1>Advancing Anaesthesia Through Knowledge.</h1>
-      <p class="lede">The academic and professional knowledge hub for anaesthesia in Nigeria and Africa: articles, clinical notes, examination guidance and research resources.</p>
 
-      <!-- Wire this form to your existing search (change action / field name as needed) -->
-      <form class="search" id="search" role="search" action="search/" method="get">
-        <label class="sr" for="q" style="position:absolute;left:-999px">Search articles, topics and resources</label>
-        <input id="q" name="q" type="search" placeholder="Search articles, topics and resources" autocomplete="off">
-        <button class="btn btn-amber" type="submit">Search</button>
-      </form>
-
-      <div class="quick">
-        <span>Popular:</span>
-        <a href="examinations/wacs/">WACS Anaesthesia</a>
-        <a href="articles/writing-your-first-case-report-a-structure-that-works/">Case reports</a>
-        <a href="articles/pre-oxygenation-before-induction-the-core-idea/">Pre-oxygenation</a>
-        <a href="research/methodology/">Research skills</a>
-      </div>
-
-      <div class="facts">
-        <div><strong>12</strong><span>categories of learning resources</span></div>
-        <div><strong>3</strong><span>examination routes: WACS, NPMCN and Diploma</span></div>
-        <div><strong>Human-reviewed</strong><span>clinical material is checked by a qualified person before it is published</span></div>
-      </div>
-    </div>
-
-    <!-- Capnogram trace: the one memorable element. Draws itself once on load. -->
-    <svg class="trace" viewBox="0 0 1200 120" preserveAspectRatio="none" role="img" aria-label="Decorative capnography waveform">
-      <path pathLength="1" d="M0 104 h30 l10 -74 l60 -10 l8 84 h42 h30 l10 -74 l60 -10 l8 84 h42 h30 l10 -74 l60 -10 l8 84 h42 h30 l10 -74 l60 -10 l8 84 h42 h30 l10 -74 l60 -10 l8 84 h42 h30 l10 -74 l60 -10 l8 84 h42 h30 l10 -74 l60 -10 l8 84 h42 h30 l10 -74 l60 -10 l8 84 h42"/>
-    </svg>
-  </div>
-
-  <section aria-labelledby="start-h">
+  <!-- 2. Hero -->
+  <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
-      <div class="sec-head"><h2 id="start-h">Start here</h2></div>
-      <div class="start">
-        <a href="resources/">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 8h6"/></svg>
-          <h3>Academic Resources</h3>
-          <p>A directory of learning materials across twelve anaesthesia categories.</p>
-        </a>
-        <a href="examinations/">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 13l2 2 4-4"/></svg>
-          <h3>Examinations</h3>
-          <p>Structured starting points for WACS, NPMCN and Diploma preparation.</p>
-        </a>
-        <a href="research/">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 15h8"/></svg>
-          <h3>Research</h3>
-          <p>Methodology, writing skills, grants and opportunities for African researchers.</p>
-        </a>
-        <a href="news/">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg>
-          <h3>Latest Updates</h3>
-          <p>Academic and professional updates, announced as they are verified.</p>
-        </a>
-      </div>
-    </div>
-  </section>
+      <div class="hero-grid">
+        <h1 id="hero-title">Anaesthesia knowledge you can search, cite and trust.</h1>
 
-  <section class="alt" aria-labelledby="feat-h">
-    <div class="wrap">
-      <div class="sec-head"><h2 id="feat-h">Featured articles</h2></div>
-      <div class="articles">
-        <a class="card lead" href="articles/how-to-build-a-study-plan-for-the-wacs-primary-examination/">
-          <span class="tag">Research and Evidence-Based Practice</span>
-          <h3>How to build a study plan for the WACS primary examination</h3>
-          <time datetime="2026-11-01">1 Nov 2026</time>
-          <p>A planning framework for trainees facing the primary examination: mapping the syllabus, spacing revision and using past performance honestly.</p>
-        </a>
-        <div class="stack">
-          <a class="card" href="articles/writing-your-first-case-report-a-structure-that-works/">
-            <span class="tag research">Research and Evidence-Based Practice</span>
-            <h3>Writing your first case report: a structure that works</h3>
-            <time datetime="2026-10-28">28 Oct 2026</time>
-            <p>The section-by-section shape of a publishable case report, and the editorial checks reviewers look for first.</p>
-          </a>
-          <a class="card" href="articles/pre-oxygenation-before-induction-the-core-idea/">
-            <span class="tag">General Anaesthesia</span>
-            <h3>Pre-oxygenation before induction: the core idea</h3>
-            <time datetime="2026-10-25">25 Oct 2026</time>
-            <p>Why pre-oxygenation is done, what it changes physiologically, and the practical points trainees are usually examined on.</p>
-          </a>
+        <div class="hero-copy">
+          <p class="lede">An independent academic hub for anaesthesia trainees, practitioners and educators in Nigeria and West Africa.</p>
+          <p>Official notices stay with WACS and NPMCN. The study plans, explanations and reviewed notes that make them usable live here, as a durable, searchable layer instead of scattered WhatsApp and Drive files.</p>
+
+          <div class="hero-actions">
+            <a class="btn" href="#site-search">Search the library</a>
+            <a class="go" href="#examinations">Browse by examination route</a>
+          </div>
+
+          <div class="starts">
+            <p>Common starting points</p>
+            <ul>
+              <li><a href="/search?q=pre-oxygenation">Pre-oxygenation</a></li>
+              <li><a href="/search?q=WACS+Primary+study+plan">WACS Primary study plan</a></li>
+              <li><a href="/search?q=research+methodology">Research methodology</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-      <a class="more" href="articles/">Browse all articles</a>
+    </div>
+
+    <!-- Decorative capnogram trace: the only graphic on the page -->
+    <svg class="trace" viewBox="0 0 1200 80" preserveAspectRatio="xMinYMid slice" aria-hidden="true" focusable="false">
+      <line x1="0" y1="70" x2="1200" y2="70"/>
+      <path d="M0 70 h40 l16 -46 l8 -4 l86 -8 l8 58 h82 h40 l16 -46 l8 -4 l86 -8 l8 58 h82 h40 l16 -46 l8 -4 l86 -8 l8 58 h82 h40 l16 -46 l8 -4 l86 -8 l8 58 h82 h40 l16 -46 l8 -4 l86 -8 l8 58 h82"/>
+    </svg>
+  </section>
+
+  <!-- 3. Primary entry points -->
+  <section aria-labelledby="entry-title">
+    <h2 id="entry-title" class="sr-only">Where to begin</h2>
+    <div class="wrap">
+      <div class="entries">
+        <article class="entry">
+          <h3>Academic Resources</h3>
+          <p>Lecture notes, drug and physiology summaries and clinical guides, organised by syllabus topic.</p>
+          <a class="go" href="/resources">Browse resources</a>
+        </article>
+        <article class="entry">
+          <h3>Examinations</h3>
+          <p>Study frameworks for WACS, NPMCN and Diploma candidates, so you know what to read and in what order.</p>
+          <a class="go" href="/examinations">Choose your route</a>
+        </article>
+        <article class="entry">
+          <h3>Research</h3>
+          <p>Methodology guides that take a registrar from first idea to audit, case report and submitted paper.</p>
+          <a class="go" href="/research">Start a research project</a>
+        </article>
+      </div>
     </div>
   </section>
 
-  <section aria-label="Examinations and research">
-    <div class="wrap two">
-      <div>
-        <h2>Examination preparation</h2>
-        <p>Orientation pages for the three routes most Nigerian anaesthesia trainees take, each with a study-planning framework and pointers to official sources.</p>
-        <ul class="routes">
-          <li><a href="examinations/wacs/">WACS Anaesthesia</a></li>
-          <li><a href="examinations/npmcn/">NPMCN Anaesthesia</a></li>
-          <li><a href="examinations/diploma/">Diploma in Anaesthesia</a></li>
-        </ul>
+  <!-- 4. Featured articles -->
+  <section class="section" id="featured" aria-labelledby="featured-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="featured-title">Featured articles</h2>
+        <p>Recently published and reviewed. <a class="go" href="/articles">All articles</a></p>
       </div>
-      <div>
-        <h2>Research and opportunities</h2>
-        <p>Skills pages for methodology, biostatistics and scientific writing, plus a curated view of grants, fellowships and calls for papers relevant to anaesthesia in Africa.</p>
-        <a class="btn btn-teal" href="research/methodology/">Research skills</a>
+
+      <div class="featured">
+        <article class="article lead">
+          <p class="meta"><span class="cat">Examinations</span> <time datetime="2026-11-01">1 November 2026</time></p>
+          <h3><a href="/articles/how-to-build-a-study-plan-for-the-wacs-primary-examination/">How to build a study plan for the WACS primary examination</a></h3>
+          <p>A planning framework for trainees facing the primary examination: mapping the syllabus, spacing revision and using past performance honestly.</p>
+          <a class="go" href="/articles/how-to-build-a-study-plan-for-the-wacs-primary-examination/">Read the article</a>
+        </article>
+
+        <div class="side">
+          <article class="article">
+            <p class="meta"><span class="cat">Research</span> <time datetime="2026-10-28">28 October 2026</time></p>
+            <h3><a href="/articles/writing-your-first-case-report-a-structure-that-works/">Writing your first case report: a structure that works</a></h3>
+            <p>The section-by-section shape of a publishable case report, and the editorial checks reviewers look for first.</p>
+          </article>
+
+          <article class="article">
+            <p class="meta"><span class="cat">Clinical practice</span> <time datetime="2026-10-25">25 October 2026</time></p>
+            <h3><a href="/articles/pre-oxygenation-before-induction-the-core-idea/">Pre-oxygenation before induction: the core idea</a></h3>
+            <p>Why pre-oxygenation is done, what it changes physiologically, and the practical points trainees are usually examined on.</p>
+          </article>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="alt" aria-labelledby="about-h">
-    <div class="wrap about">
-      <!-- Replace with a real photo: <img class="avatar" src="..." alt="Name"> -->
-      <div class="avatar" aria-hidden="true">AN</div>
-      <div>
-        <h2 id="about-h">About this site</h2>
-        <p>anaesthesia.ng is an independent academic resource for anaesthesia trainees, practitioners and educators in Nigeria and across Africa. Clinical material is reviewed by a qualified human before publication, and demonstration entries are clearly labelled.</p>
-        <p class="who">Editor: [Your name, qualifications and institution]</p>
-        <a class="btn btn-amber" href="about/">About and editorial policy</a>
+  <!-- 5. Examination routes -->
+  <section class="section on-dark" id="examinations" aria-labelledby="exams-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="exams-title">Examination routes</h2>
+        <p>Dates, fees and regulations come from the colleges, so confirm them there. The study frameworks here help you prepare for what the colleges set.</p>
+      </div>
+
+      <ul>
+        <li class="route">
+          <div>
+            <h3>WACS</h3>
+            <p class="full">West African College of Surgeons, Faculty of Anaesthesia</p>
+          </div>
+          <p>Orientation for the Primary and Membership examinations: how the syllabus is organised, what to study first and how to pace your revision.</p>
+          <a class="go" href="/examinations/wacs">WACS study framework</a>
+        </li>
+        <li class="route">
+          <div>
+            <h3>NPMCN</h3>
+            <p class="full">National Postgraduate Medical College of Nigeria, Faculty of Anaesthesia</p>
+          </div>
+          <p>Orientation for the Primary and Final examinations: syllabus structure, question formats to practise and a sensible revision sequence.</p>
+          <a class="go" href="/examinations/npmcn">NPMCN study framework</a>
+        </li>
+        <li class="route">
+          <div>
+            <h3>Diploma</h3>
+            <p class="full">Diploma in Anaesthesia</p>
+          </div>
+          <p>Orientation for Diploma candidates: core topics, written-question practice and how to build a clear answer under time limits.</p>
+          <a class="go" href="/examinations/diploma">Diploma study framework</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6. Emerging capabilities -->
+  <section class="section" id="in-development" aria-labelledby="dev-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="dev-title">What is being built next</h2>
+        <p>None of these is live yet. They are listed so you can see where the platform is heading.</p>
+      </div>
+
+      <ul class="caps">
+        <li class="cap">
+          <h3>SBA and past-question engine</h3>
+          <p>Searchable single-best-answer questions, tagged by syllabus topic.</p>
+          <span class="tag">In development</span>
+        </li>
+        <li class="cap">
+          <h3>Locum listings</h3>
+          <p>A board for locum posts at hospitals across Nigeria and West Africa.</p>
+          <span class="tag">In development</span>
+        </li>
+        <li class="cap">
+          <h3>Local textbooks</h3>
+          <p>Curated texts written by lecturers in Nigeria and West Africa.</p>
+          <span class="tag">In development</span>
+        </li>
+        <li class="cap">
+          <h3>CPD certificates</h3>
+          <p>Short modules with a recorded certificate of completion.</p>
+          <span class="tag">In development</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. Trust signal -->
+  <section class="section on-accent" id="review" aria-labelledby="trust-title">
+    <div class="wrap">
+      <div class="trust-grid">
+        <div class="trust-copy">
+          <h2 id="trust-title">Human-reviewed clinical material</h2>
+          <p>Clinical content is checked by a practising anaesthetist before publication, and every article shows what it rests on.</p>
+          <a class="go" href="/editorial-policy">Read the editorial policy</a>
+        </div>
+
+        <dl class="trust-list">
+          <div>
+            <dt>Reviewed before publication</dt>
+            <dd>A practising anaesthetist reads each clinical article before it goes live.</dd>
+          </div>
+          <div>
+            <dt>Sources and dates shown</dt>
+            <dd>Each article lists its references and the date it was last reviewed.</dd>
+          </div>
+          <div>
+            <dt>Corrections made in the open</dt>
+            <dd>Errors reported by readers are corrected on the page, with the change noted.</dd>
+          </div>
+          <div>
+            <dt>Education, not instruction</dt>
+            <dd>The material supports learning. It does not replace local protocols, supervision or your own clinical judgement.</dd>
+          </div>
+        </dl>
       </div>
     </div>
   </section>
+
 </main>
 
-<footer>
+<!-- 8. Footer -->
+<footer class="site-footer">
   <div class="wrap">
-    <div class="foot">
+    <div class="footer-grid">
       <div>
-        <a class="logo" href="./">anaesthesia<span>.ng</span></a>
-        <p>Advancing Anaesthesia Through Knowledge.</p>
-        <!-- Connect to your email provider (Buttondown, Mailchimp, Formspree...) by changing the action -->
-        <form class="signup" action="#" method="post">
-          <label for="email" style="position:absolute;left:-999px">Email address</label>
-          <input id="email" name="email" type="email" placeholder="Your email address" required>
-          <button class="btn btn-amber" type="submit">Subscribe</button>
-        </form>
-        <p style="margin-top:8px;font-size:.9rem">Exam tips and calls for papers, sent occasionally.</p>
+        <a class="wordmark" href="/" aria-label="anaesthesia.ng home">anaesthesia<span>.ng</span></a>
+        <p class="footer-about">An independent academic knowledge hub for anaesthesia in Nigeria and West Africa.</p>
       </div>
-      <div>
-        <h3>Explore</h3>
-        <ul class="cols">
-          <li><a href="./">Home</a></li>
-          <li><a href="resources/">Resources</a></li>
-          <li><a href="articles/">Articles</a></li>
-          <li><a href="clinical-notes/">Clinical Notes</a></li>
-          <li><a href="study-resources/">Study Resources</a></li>
-          <li><a href="examinations/">Examinations</a></li>
-          <li><a href="research/">Research</a></li>
-          <li><a href="news/">News</a></li>
-          <li><a href="about/">About</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Legal</h3>
-        <ul class="cols" style="columns:1">
-          <li><a href="privacy/">Privacy</a></li>
-          <li><a href="disclaimer/">Disclaimer</a></li>
-          <li><a href="contact/">Contact</a></li>
-        </ul>
-      </div>
+
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/about">About</a>
+        <a href="/editorial-policy">Editorial policy</a>
+        <a href="/contact">Contact</a>
+        <a href="https://github.com/RolandDecker/anaesthesia-ng">Source on GitHub</a>
+      </nav>
     </div>
-    <p class="legal">&copy; 2026 anaesthesia.ng. Educational information only; it does not replace clinical judgement, institutional protocols or specialist consultation.</p>
+
+    <p class="footer-note">&copy; 2026 anaesthesia.ng. Independent and not affiliated with WACS or NPMCN. This site is a static build maintained in a GitHub repository; the repository holds the source and change history.</p>
   </div>
 </footer>
 
-<script>
-(function(){
-  var btn=document.getElementById('menuBtn'),nav=document.getElementById('nav'),dd=document.getElementById('learn');
-  btn.addEventListener('click',function(){
-    var open=nav.classList.toggle('open');
-    btn.setAttribute('aria-expanded',open);
-  });
-  document.addEventListener('click',function(e){
-    if(dd && dd.open && !dd.contains(e.target)) dd.open=false;
-  });
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){ if(dd) dd.open=false; nav.classList.remove('open'); btn.setAttribute('aria-expanded',false); }
-  });
-})();
-</script>
 </body>
 </html>
