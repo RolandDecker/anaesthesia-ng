@@ -157,12 +157,36 @@ def site_jsonld():
 
 # ---------- page shell ----------
 
+SEARCH_ICON = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+               'stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/>'
+               '<path d="M20 20l-3.5-3.5"/></svg>')
+
+MENU_JS = """
+(function(){
+  var btn=document.getElementById('menuBtn'),nav=document.getElementById('nav'),dd=document.getElementById('learn');
+  if(btn){btn.addEventListener('click',function(){var open=nav.classList.toggle('open');btn.setAttribute('aria-expanded',open);});}
+  document.addEventListener('click',function(e){
+    if(dd && dd.open && !dd.contains(e.target)) dd.open=false;
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){ if(dd) dd.open=false; if(nav) nav.classList.remove('open'); if(btn) btn.setAttribute('aria-expanded',false); }
+  });
+})();
+"""
+
+
 def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
-    nav_links = []
-    for target, label in NAV:
-        cls = ' aria-current="page"' if target == (active or path) else ""
-        nav_links.append('<a href="%s"%s>%s</a>' % (link(target, path), cls, esc_text(label)))
-    nav_html = "".join(nav_links)
+    cur = active or path
+    root = "/" if cur == "/" else "/" + cur.strip("/").split("/")[0] + "/"
+
+    def mark(t):
+        return ' aria-current="page"' if t == root else ""
+
+    learn = "".join('<a href="%s"%s>%s</a>' % (link(t, path), mark(t), esc_text(l))
+                    for t, l in [("/resources/", "Resources"), ("/articles/", "Articles"),
+                                 ("/clinical-notes/", "Clinical Notes"), ("/study-resources/", "Study Resources")])
+    top = "".join('<a href="%s"%s>%s</a>' % (link(t, path), mark(t), esc_text(l))
+                  for t, l in [("/research/", "Research"), ("/news/", "News"), ("/about/", "About")])
     canonical = SITE_URL + ("" if path == "/" else path)
     demo_html = ('<div class="demo-banner" role="note"><strong>Demonstration content.</strong> '
                  + esc_text(DEMO_NOTE) + "</div>") if demo else ""
@@ -170,8 +194,10 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
     legal = "".join('<li><a href="%s">%s</a></li>' % (link(t, path), l)
                     for t, l in [("/privacy/", "Privacy"), ("/disclaimer/", "Disclaimer"), ("/contact/", "Contact")])
     favicon = link("/assets/favicon.svg", path)
-    css = link("/assets/style.css", path)
+    css_link = link("/assets/style.css", path)
     home_link = link("/", path)
+    search_link = link("/search/", path)
+    exam_link = link("/examinations/", path)
     out = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,51 +205,67 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
+<meta name="theme-color" content="#07383f">
 <link rel="canonical" href="{canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{SITE_NAME}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{canonical}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="{favicon}">
-<link rel="stylesheet" href="{css}">
+<link rel="stylesheet" href="{css_link}">
 {site_jsonld()}{extra_head}
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
-  <div class="wrap header-inner">
-    <a class="logo" href="{home_link}">anaesthesia<span class="logo-dot">.ng</span></a>
-    <nav class="main-nav" aria-label="Main">{nav_html}</nav>
-    <details class="mobile-menu">
-      <summary aria-label="Open menu">Menu</summary>
-      <nav aria-label="Mobile">{nav_html}</nav>
-    </details>
+  <div class="wrap bar">
+    <a class="logo" href="{home_link}">anaesthesia<span>.ng</span></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <details class="dd" id="learn">
+        <summary>Learn</summary>
+        <div class="dd-panel">{learn}</div>
+      </details>
+      {top}
+      <a class="search-link" href="{search_link}" aria-label="Search the site">{SEARCH_ICON}<span>Search</span></a>
+      <a class="btn-nav" href="{exam_link}"{mark("/examinations/")}>Exam preparation</a>
+    </nav>
   </div>
 </header>
 <main id="main">
 {demo_html}{body}
 </main>
-<footer class="site-footer">
-  <div class="wrap footer-grid">
-    <div>
-      <p class="footer-logo">anaesthesia<span class="logo-dot">.ng</span></p>
-      <p class="footer-tag">{esc_text(TAGLINE)}</p>
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="logo" href="{home_link}">anaesthesia<span>.ng</span></a>
+        <p>{esc_text(TAGLINE)}</p>
+        <form class="signup" action="#" method="post">
+          <label for="email" style="position:absolute;left:-999px">Email address</label>
+          <input id="email" name="email" type="email" placeholder="Your email address" required>
+          <button class="btn btn-amber" type="submit">Subscribe</button>
+        </form>
+        <p style="margin-top:8px;font-size:.9rem">Exam tips and calls for papers, sent occasionally.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <ul class="cols">{explore}</ul>
+      </div>
+      <div>
+        <h3>Legal</h3>
+        <ul class="cols" style="columns:1">{legal}</ul>
+      </div>
     </div>
-    <div>
-      <h3>Explore</h3>
-      <ul>{explore}</ul>
-    </div>
-    <div>
-      <h3>Legal</h3>
-      <ul>{legal}</ul>
-    </div>
-  </div>
-  <div class="wrap footer-legal">
-    <p>&copy; 2026 anaesthesia.ng. Educational information only; it does not replace
+    <p class="legal">&copy; 2026 anaesthesia.ng. Educational information only; it does not replace
     clinical judgement, institutional protocols or specialist consultation.</p>
   </div>
 </footer>
+<script>{MENU_JS}</script>
 </body>
 </html>
 """
