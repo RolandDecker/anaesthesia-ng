@@ -543,6 +543,9 @@ def main():
     write("/sitemap.xml", "\n".join(sm))
     write("/robots.txt", "User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n" % SITE_URL)
 
+    # custom domain for GitHub Pages (apex): picked up by the Pages deployment
+    write("/CNAME", "anaesthesia.ng\n")
+
     n_html = len(urls) + 1
     print("built %s pages into docs/" % n_html)
 
