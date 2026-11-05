@@ -194,7 +194,7 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
     legal = "".join('<li><a href="%s">%s</a></li>' % (link(t, path), l)
                     for t, l in [("/privacy/", "Privacy"), ("/disclaimer/", "Disclaimer"), ("/contact/", "Contact")])
     favicon = link("/assets/favicon.svg", path)
-    css_link = link("/assets/style.css", path)
+    css_link = link("/assets/style.css", path) + "?v=2"
     home_link = link("/", path)
     search_link = link("/search/", path)
     exam_link = link("/examinations/", path)
