@@ -431,7 +431,12 @@ def main():
     pages = [i for i in items if i["type"] == "page"]
     page_by_path = {p["path"]: p for p in pages}
 
-    write("/", home_html(articles, notes, news))
+    override_home = os.path.join(ROOT, "overrides", "index.html")
+    if os.path.exists(override_home):
+        shutil.copyfile(override_home, os.path.join(OUT, "index.html"))
+        print("homepage: using overrides/index.html verbatim")
+    else:
+        write("/", home_html(articles, notes, news))
 
     # article + note + news pages
     for it in articles:
