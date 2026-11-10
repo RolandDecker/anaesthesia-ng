@@ -1,0 +1,22 @@
+{
+  "_comment": "OpportunityBoard v0 data. Approved listings go in 'listings'; entries whose deadline has passed are excluded from builds automatically. 'fixtures' is development-only: it is included ONLY when the build runs with OPPORTUNITY_BOARD_DEV=1 and never appears in production builds. Fields: slug, title, hospital, state, city, type (permanent | locum | training/fellowship), specialty, contract_length, remuneration (optional), description, deadline (YYYY-MM-DD), apply_method (email address or https URL), posted_date (YYYY-MM-DD), verified (boolean; shows the Verified badge only when true).",
+  "listings": [],
+  "fixtures": [
+    {
+      "slug": "example-registrar-anaesthesia-abuja",
+      "title": "Registrar, Anaesthesia (development fixture)",
+      "hospital": "Example Federal Teaching Hospital",
+      "state": "FCT",
+      "city": "Abuja",
+      "type": "training/fellowship",
+      "specialty": "General Anaesthesia",
+      "contract_length": "24 months",
+      "remuneration": "",
+      "description": "Development fixture used only when OPPORTUNITY_BOARD_DEV=1 is set. This entry never appears in production builds. Its purpose is to exercise the board cards, the filters, the detail page and the JobPosting structured data before real listings exist.",
+      "deadline": "2030-01-01",
+      "apply_method": "recruitment@example-hospital.example.ng",
+      "posted_date": "2026-11-10",
+      "verified": false
+    }
+  ]
+}

@@ -141,7 +141,7 @@ h2 { font: 600 28px/36px var(--display); letter-spacing: -0.01em; }
   padding-bottom: env(safe-area-inset-bottom);
   background: var(--ink);
 }
-.site-nav ul { display: grid; grid-template-columns: repeat(5, 1fr); }
+.site-nav ul { display: grid; grid-template-columns: repeat(6, 1fr); }
 .site-nav a {
   display: flex; align-items: center; justify-content: center;
   min-height: 56px; padding: 0 4px;
@@ -369,3 +369,29 @@ h2 { font: 600 28px/36px var(--display); letter-spacing: -0.01em; }
 
 .demo-banner { background: var(--accent); color: var(--paper); padding: 16px 40px; font-size: 14px; line-height: 24px; }
 .demo-banner strong { font-weight: 600; }
+
+/* ---- Opportunity board v0 ---- */
+.opp-filters { display: flex; flex-wrap: wrap; gap: 16px; margin: 0 0 20px; }
+.opp-filters label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink); }
+.opp-filters select { min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); background: var(--paper); font: inherit; }
+.opp-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.opp-card { position: relative; padding: 20px; display: block; }
+.opp-card h3 { margin: 0 0 6px; }
+.opp-badge { display: inline-block; background: var(--accent); color: var(--paper); font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 2px; letter-spacing: .04em; text-transform: uppercase; }
+.opp-empty { border: 2px dashed var(--line); padding: 40px 24px; text-align: center; margin: 8px 0 24px; }
+.opp-trust { border-left: 4px solid var(--accent); background: var(--paper); padding: 10px 14px; font-size: 14px; margin: 12px 0; }
+.opp-meta li { margin-bottom: 6px; }
+.opp-apply { margin: 20px 0 0; }
+.vacancy-form { display: block; margin: 24px 0; }
+.vacancy-form .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 14px; }
+.vacancy-form label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600; }
+.vacancy-form input:not([type="checkbox"]):not([type="hidden"]), .vacancy-form select, .vacancy-form textarea { min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); background: var(--paper); font: inherit; font-weight: 400; }
+.vacancy-form textarea { min-height: 160px; resize: vertical; }
+.vacancy-form .consent { flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 400; margin: 14px 0; }
+.vacancy-form .consent input { width: 20px; height: 20px; margin-top: 2px; }
+.vacancy-form .consent a { font-weight: 600; }
+.vacancy-form button[type="submit"] { min-height: 48px; padding: 0 28px; background: var(--ink); color: var(--paper); border: none; font: inherit; font-weight: 600; cursor: pointer; }
+.vacancy-form button[type="submit"]:disabled { opacity: .6; cursor: progress; }
+.hp-wrap { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.hp-field { display: none; }
+.form-error { color: #8a1c1c; font-weight: 600; }
