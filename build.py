@@ -169,6 +169,7 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
                  + esc_text(DEMO_NOTE) + "</div>") if demo else ""
     favicon = link("/assets/favicon.svg", path)
     css_link = link("/assets/style.css", path) + "?v=3"
+    analytics_link = link("/assets/analytics.js", path)
     home_link = link("/", path)
     search_link = link("/search/", path)
     out = f"""<!DOCTYPE html>
@@ -190,6 +191,7 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="{favicon}">
 <link rel="stylesheet" href="{css_link}">
+<script src="{analytics_link}"></script>
 {site_jsonld()}{extra_head}
 </head>
 <body>
@@ -291,7 +293,7 @@ def article_page(item, all_items, base_list, base_label):
         esc_text(item.get("reviewed", item.get("date", TODAY))),
         link("/articles/category/%s/" % slugify(cat), path) if cat else link(base_list, path),
         esc_text(cat or base_label))
-    body = (crumbs(path, item["title"]) + '<article class="prose"><h1>' + esc_text(item["title"]) + "</h1>"
+    body = (crumbs(path, item["title"]) + '<article class="prose" data-slug="' + item["path"].strip("/").split("/")[-1] + '"><h1>' + esc_text(item["title"]) + "</h1>"
             + byline + item["body_html"] + "</article>" + related_html)
     return shell(path, item["title"] + " | " + SITE_NAME, item.get("excerpt", DESCRIPTION),
                  body, active=base_list, demo=item.get("demo") == "true", extra_head=ld)
@@ -405,6 +407,9 @@ SEARCH_JS = """
       if (!ql) { return true; }
       return ((it.title + ' ' + it.category + ' ' + it.excerpt).toLowerCase().indexOf(ql) !== -1);
     });
+    if (q && window.Analytics) {
+      window.Analytics.track('site_search', { query: q, results_count: hits.length });
+    }
     if (hits.length) {
       box.innerHTML = '<ul class="post-list">' + hits.map(function (it) {
         return '<li class="post-row"><a href="__PREFIX__' + it.url + '">' + esc(it.title) + '</a>' +
