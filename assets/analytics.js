@@ -97,14 +97,31 @@
       autocapture: false
     });
 
+    flushPending();
     capturePageview();
     watchHistory();
   }
 
-  /* Public wrapper: no-ops unless consent is granted and PostHog is live. */
+  /* Public wrapper: consent-gated. Events fired before PostHog init (inline
+     page scripts run before DOMContentLoaded) are queued and flushed once
+     init completes, so early page events are not silently dropped. */
+  var pendingEvents = [];
+  function flushPending() {
+    while (pendingEvents.length && window.posthog && window.posthog.capture) {
+      var q = pendingEvents.shift();
+      window.posthog.capture(q[0], q[1]);
+    }
+  }
   function track(event, props) {
-    if (!inited || !window.posthog || !window.posthog.capture) { return; }
-    window.posthog.capture(event, cleanProps(props));
+    var cleaned = cleanProps(props);
+    if (!inited || !window.posthog || !window.posthog.capture) {
+      /* Queue only when consent is undecided or granted; never on a decline. */
+      if (readConsent() !== "denied" && pendingEvents.length < 10) {
+        pendingEvents.push([event, cleaned]);
+      }
+      return;
+    }
+    window.posthog.capture(event, cleaned);
   }
 
   /* Identity: internal ids only. Email-shaped ids are refused. */
