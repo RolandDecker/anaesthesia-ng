@@ -326,6 +326,12 @@ h2 { font: 600 28px/36px var(--display); letter-spacing: -0.01em; }
   .footer-grid { grid-template-columns: 6fr 6fr; }
   .footer-links { grid-column: auto; grid-template-columns: repeat(4, auto); justify-content: end; gap: 8px 40px; }
 }
+
+/* 7.5 Newsletter signup */
+.newsletter-wrap { display: grid; gap: 24px; justify-items: center; text-align: center; }
+.newsletter-copy h2 { font: 600 28px/36px var(--display); }
+.newsletter-copy p { color: var(--soft); max-width: 520px; margin-top: 8px; }
+.newsletter-embed { width: 100%; max-width: 560px; }
 </style>
 <script src="/assets/analytics.js"></script>
 </head>
@@ -547,6 +553,20 @@ h2 { font: 600 28px/36px var(--display); letter-spacing: -0.01em; }
             <dd>The material supports learning. It does not replace local protocols, supervision or your own clinical judgement.</dd>
           </div>
         </dl>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 7.5 Newsletter signup (Kit form "anaesthesia.ng signup", double opt-in) -->
+  <section class="section" id="newsletter" aria-labelledby="newsletter-title">
+    <div class="wrap newsletter-wrap">
+      <div class="newsletter-copy">
+        <h2 id="newsletter-title">Get new material by email</h2>
+        <p>One short email when new articles, exam frameworks or resources go live. No spam, and you can unsubscribe with one click.</p>
+      </div>
+      <div class="newsletter-embed">
+        <script async data-uid="09cc83679c" src="https://anaesthesia-ng.kit.com/09cc83679c/index.js"></script>
       </div>
     </div>
   </section>
