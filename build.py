@@ -26,6 +26,27 @@ DESCRIPTION = ("The academic and professional knowledge hub for anaesthesia in "
 SITE_URL = "https://anaesthesia.ng"
 TODAY = date.today().isoformat()
 
+# ---- OpportunityBoard v0 config ----
+# Web3Forms public access key (public by design; submissions go to the
+# mailbox the Web3Forms account was created with). No secret lives here.
+W3F_ACCESS_KEY = "ed40ec04-304d-434a-a07d-5eeb0e971488"
+W3F_ENDPOINT = "https://api.web3forms.com/submit"
+OPPORTUNITIES_JSON = os.path.join(ROOT, "data", "opportunities.json")
+OPP_BOARD_PATH = "/opportunities/"
+OPP_FORM_PATH = "/post-vacancy/"
+OPP_THANKS_PATH = "/post-vacancy/thanks/"
+OPP_TYPES = ("permanent", "locum", "training/fellowship")
+OPP_NIGERIAN_STATES = [
+    "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue",
+    "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT",
+    "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi",
+    "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo",
+    "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara",
+]
+OPP_TRUST_NOTE = ("anaesthesia.ng lists vacancies only. We do not employ, place "
+                  "or recommend candidates and charge candidates nothing. "
+                  "Apply directly to the hospital.")
+
 CATEGORIES = [
     "General Anaesthesia", "Regional Anaesthesia", "Obstetric Anaesthesia",
     "Paediatric Anaesthesia", "Neuroanaesthesia", "Cardiothoracic Anaesthesia",
@@ -38,7 +59,7 @@ NAV = [
     ("/", "Home"), ("/resources/", "Resources"), ("/articles/", "Articles"),
     ("/clinical-notes/", "Clinical Notes"), ("/study-resources/", "Study Resources"),
     ("/examinations/", "Examinations"), ("/research/", "Research"),
-    ("/news/", "News"), ("/about/", "About"),
+    ("/news/", "News"), ("/opportunities/", "Opportunities"), ("/about/", "About"),
 ]
 
 DEMO_NOTE = ("Demonstration content prepared to show the site structure. "
@@ -46,7 +67,7 @@ DEMO_NOTE = ("Demonstration content prepared to show the site structure. "
 
 CRUMB_LABELS = {
     "examinations": "Examinations", "research": "Research", "articles": "Articles",
-    "clinical-notes": "Clinical Notes", "news": "News", "resources": "Resources",
+    "clinical-notes": "Clinical Notes", "news": "News", "opportunities": "Opportunities", "resources": "Resources",
     "study-resources": "Study Resources", "about": "About", "contact": "Contact",
     "privacy": "Privacy", "disclaimer": "Disclaimer", "category": "Categories",
 }
@@ -168,7 +189,7 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
     demo_html = ('<div class="demo-banner" role="note"><strong>Demonstration content.</strong> '
                  + esc_text(DEMO_NOTE) + "</div>") if demo else ""
     favicon = link("/assets/favicon.svg", path)
-    css_link = link("/assets/style.css", path) + "?v=3"
+    css_link = link("/assets/style.css", path) + "?v=4"
     analytics_link = link("/assets/analytics.js", path)
     home_link = link("/", path)
     search_link = link("/search/", path)
@@ -212,6 +233,7 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
         <li><a href="{link("/resources/", path)}"{mark("/resources/")}>Resources</a></li>
         <li><a href="{link("/examinations/", path)}"{mark("/examinations/")}>Exams</a></li>
         <li><a href="{link("/research/", path)}"{mark("/research/")}>Research</a></li>
+        <li><a href="{link("/opportunities/", path)}"{mark("/opportunities/")}>Opportunities</a></li>
         <li><a href="{link("/about/", path)}"{mark("/about/")}>About</a></li>
       </ul>
     </nav>
@@ -424,6 +446,305 @@ SEARCH_JS = """
 """
 
 
+# ---------- opportunity board (OpportunityBoard v0) ----------
+
+def load_opportunities():
+    """Read data/opportunities.json. Dev fixtures are included only when the
+    OPPORTUNITY_BOARD_DEV env var is set, so production builds never show them.
+    Listings whose deadline has passed are hidden (build-time expiry)."""
+    try:
+        with open(OPPORTUNITIES_JSON, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        data = {"listings": [], "fixtures": []}
+    listings = list(data.get("listings", []))
+    if os.environ.get("OPPORTUNITY_BOARD_DEV") == "1":
+        listings += list(data.get("fixtures", []))
+    live = []
+    today = date.today()
+    for o in listings:
+        deadline = o.get("deadline", "")
+        try:
+            if deadline and date.fromisoformat(deadline) < today:
+                continue
+        except ValueError:
+            pass  # malformed date: keep, do not silently drop data
+        live.append(o)
+    return live
+
+
+def opp_employment_type(t):
+    t = (t or "").lower()
+    if t == "permanent":
+        return "FULL_TIME"
+    if t == "locum":
+        return "CONTRACTOR"
+    return "FELLOWSHIP"
+
+
+def trust_note_html(path):
+    return '<p class="opp-trust">' + esc_text(OPP_TRUST_NOTE) + "</p>"
+
+
+def opp_apply_html(o, path):
+    am = (o.get("apply_method") or "").strip()
+    if not am:
+        return ""
+    if "@" in am and "://" not in am:
+        href, label = "mailto:" + esc(am), esc_text(am)
+    else:
+        href, label = esc(am), esc_text(am)
+    return ('<p class="opp-apply"><a class="button" data-apply href="%s" rel="noopener">Apply to the hospital</a>'
+            '<span class="post-meta">&nbsp;%s</span></p>' % (href, label))
+
+
+def opp_card(o, path):
+    href = link("/opportunities/%s/" % o["slug"], path)
+    desc = (o.get("description") or "").strip()
+    excerpt = desc[:160] + ("…" if len(desc) > 160 else "")
+    badge = '<span class="opp-badge">Verified</span> ' if o.get("verified") else ""
+    meta = " &middot; ".join(x for x in [
+        esc_text(o.get("hospital", "")),
+        esc_text("%s, %s" % (o.get("city", ""), o.get("state", "")) if o.get("city") else o.get("state", "")),
+        esc_text(o.get("type", "")),
+        esc_text(o.get("specialty", "")),
+    ] if x)
+    return ('<li class="card opp-card" data-state="%s" data-type="%s" data-specialty="%s">'
+            '%s<a href="%s"><h3>%s</h3></a>'
+            '<p class="post-meta">%s</p><p>%s</p>'
+            '<p class="post-meta">Apply by %s</p></li>') % (
+        esc(o.get("state", "")), esc(o.get("type", "")), esc(o.get("specialty", "")),
+        badge, href, esc_text(o.get("title", "")), meta, esc_text(excerpt),
+        esc_text(o.get("deadline", "")))
+
+
+BOARD_JS = """
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.opp-card'));
+  var empty = document.getElementById('opp-empty');
+  var A = window.Analytics;
+  if (A) { A.track('opportunities_viewed', { listings_count: cards.length }); }
+  var sel = {};
+  ['state', 'type', 'specialty'].forEach(function (k) {
+    sel[k] = document.getElementById('opp-filter-' + k);
+    if (!sel[k]) { return; }
+    sel[k].addEventListener('change', function () {
+      if (A) { A.track('filter_used', { filter: k, value: this.value }); }
+      apply();
+    });
+  });
+  document.addEventListener('click', function (e) {
+    var el = e.target && e.target.closest ? e.target.closest('[data-cta]') : null;
+    if (el && A) { A.track('post_vacancy_cta_clicked', { location: el.getAttribute('data-cta') }); }
+  });
+  function apply() {
+    var visible = 0, any = false;
+    cards.forEach(function (c) {
+      any = true;
+      var show = true;
+      for (var k in sel) {
+        if (sel[k] && sel[k].value && c.getAttribute('data-' + k) !== sel[k].value) { show = false; }
+      }
+      c.style.display = show ? '' : 'none';
+      if (show) { visible++; }
+    });
+    if (empty) { empty.hidden = visible > 0; }
+  }
+  apply();
+})();
+"""
+
+
+def opportunities_board(path, listings):
+    states = sorted({o.get("state", "") for o in listings if o.get("state")})
+    specialties = sorted({o.get("specialty", "") for o in listings if o.get("specialty")})
+
+    def options(values):
+        return "".join('<option value="%s">%s</option>' % (esc(v), esc_text(v)) for v in values)
+
+    filters = ""
+    if listings:
+        filters = ('<div class="opp-filters" role="group" aria-label="Filter vacancies">'
+                   '<label>State <select id="opp-filter-state"><option value="">All states</option>%s</select></label>'
+                   '<label>Type <select id="opp-filter-type"><option value="">All types</option>%s</select></label>'
+                   '<label>Specialty <select id="opp-filter-specialty"><option value="">All specialties</option>%s</select></label>'
+                   '</div>') % (options(states), options(OPP_TYPES), options(specialties))
+    cards = "".join(opp_card(o, path) for o in listings)
+    empty_state = ('<div id="opp-empty" class="opp-empty"%s>'
+                   '<p>No open roles yet. Hospitals: post a vacancy.</p>'
+                   '<p><a class="button" data-cta="opportunities_empty_state" href="%s">Post a vacancy</a></p>'
+                   '</div>') % (" hidden" if listings else "", link(OPP_FORM_PATH, path))
+    body = (crumbs(path, "Opportunities")
+            + '<article class="prose"><h1>Opportunities</h1>'
+            + '<p>Vacancies in anaesthesia and perioperative medicine in Nigeria, listed by hospitals: '
+              'permanent, locum and training/fellowship positions. Apply directly to the hospital for every role.</p>'
+            + trust_note_html(path)
+            + '<p><a class="button" data-cta="opportunities_board" href="%s">Hospitals: post a vacancy</a></p>'
+              '</article>' % link(OPP_FORM_PATH, path)
+            + filters
+            + ('<ul class="card-grid opp-grid">' + cards + "</ul>" if cards else '<ul class="card-grid opp-grid"></ul>')
+            + empty_state
+            + '<script>' + BOARD_JS + "</script>")
+    return shell(path, "Opportunities | " + SITE_NAME,
+                 "Anaesthesia and perioperative vacancies in Nigeria: permanent, locum and training/fellowship positions listed by hospitals.",
+                 body, active="/opportunities/")
+
+
+def opportunity_page(o):
+    path = OPP_BOARD_PATH + o["slug"] + "/"
+    title = o.get("title", "Vacancy")
+    hospital = o.get("hospital", "")
+    ld = jsonld([{
+        "@context": "https://schema.org",
+        "@type": "JobPosting",
+        "title": title,
+        "description": o.get("description", ""),
+        "datePosted": o.get("posted_date", TODAY),
+        "validThrough": o.get("deadline", ""),
+        "hiringOrganization": {"@type": "Organization", "name": hospital},
+        "jobLocation": {"@type": "Place", "address": {
+            "@type": "PostalAddress",
+            "addressLocality": o.get("city", ""),
+            "addressRegion": o.get("state", ""),
+            "addressCountry": "NG"}},
+        "employmentType": opp_employment_type(o.get("type")),
+    }])
+    badge = '<span class="opp-badge">Verified</span>' if o.get("verified") else ""
+    rows = []
+    if hospital: rows.append(("Hospital", hospital))
+    if o.get("state"): rows.append(("Location", ("%s, %s" % (o.get("city"), o.get("state"))).strip(", ")))
+    if o.get("type"): rows.append(("Type", o.get("type")))
+    if o.get("specialty"): rows.append(("Specialty", o.get("specialty")))
+    if o.get("contract_length"): rows.append(("Contract length", o.get("contract_length")))
+    if o.get("remuneration"): rows.append(("Remuneration", o.get("remuneration")))
+    if o.get("posted_date"): rows.append(("Posted", o.get("posted_date")))
+    if o.get("deadline"): rows.append(("Apply by", o.get("deadline")))
+    meta_rows = "".join("<li><strong>%s:</strong> %s</li>" % (esc_text(k), esc_text(v)) for k, v in rows)
+    body_parts = [p and "<p>" + esc_text(p.strip()) + "</p>" for p in (o.get("description") or "").split("\n\n")]
+    desc_html = "".join(x for x in body_parts if x)
+    body = (crumbs(path, title)
+            + '<article class="prose"><h1>' + esc_text(title) + "</h1>"
+            + ('<p>' + badge + "</p>" if badge else "")
+            + '<ul class="plain-list opp-meta">' + meta_rows + "</ul>"
+            + desc_html
+            + opp_apply_html(o, path)
+            + "</article>"
+            + trust_note_html(path)
+            + '<script>(function(){var A=window.Analytics,s=%s;'
+              'if(A){A.track("opportunity_viewed",{slug:s});}'
+              'document.addEventListener("click",function(e){'
+              'var t=e.target&&e.target.closest?e.target.closest("[data-apply]"):null;'
+              'if(t&&A){A.track("opportunity_apply_clicked",{slug:s});}});})();'
+              '</script>' % json.dumps(o["slug"]))
+    return shell(path, title + " | " + SITE_NAME,
+                 "Vacancy: %s at %s. Apply directly to the hospital." % (title, hospital),
+                 body, active="/opportunities/", extra_head=ld)
+
+
+VACANCY_FORM_JS = """
+(function () {
+  var form = document.getElementById('vacancy-form');
+  if (!form) { return; }
+  var A = window.Analytics;
+  var t0 = Date.now();
+  var started = false;
+  var MIN_MS = 5000; /* minimum time on page before submission is accepted */
+  var params = new URLSearchParams(location.search);
+  function set(name) {
+    var el = form.querySelector('[name="' + name + '"]');
+    var v = name === 'referrer' ? (document.referrer || '') : (params.get(name) || '');
+    if (el) { el.value = v; }
+  }
+  ['referrer', 'utm_source', 'utm_medium', 'utm_campaign'].forEach(set);
+  form.addEventListener('focusin', function () {
+    if (!started && A) { started = true; A.track('vacancy_form_started'); }
+  });
+  function showErr(m) {
+    var el = document.getElementById('vacancy-error');
+    if (el) { el.textContent = m; el.hidden = false; }
+    var b = form.querySelector('button[type="submit"]');
+    if (b) { b.disabled = false; b.textContent = 'Submit for review'; }
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (Date.now() - t0 < MIN_MS) { showErr('Please take a moment to complete the form before submitting.'); return; }
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    if (form.querySelector('[name="botcheck"]').value) { window.location.assign('__THANKS__'); return; }
+    var b = form.querySelector('button[type="submit"]');
+    b.disabled = true; b.textContent = 'Sending...';
+    var data = {};
+    new FormData(form).forEach(function (v, k) { data[k] = v; });
+    data.access_key = '__KEY__';
+    data.subject = 'New vacancy submission (anaesthesia.ng)';
+    data.from_name = 'anaesthesia.ng vacancy board';
+    fetch('__ENDPOINT__', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (res.success) { window.location.assign('__THANKS__'); }
+      else { showErr(res.message || 'Submission failed. Please try again.'); }
+    }).catch(function () { showErr('Network error. Please try again.'); });
+  });
+})();
+"""
+
+
+def post_vacancy_page(path):
+    states = "".join('<option value="%s">%s</option>' % (esc(s), esc_text(s)) for s in OPP_NIGERIAN_STATES)
+    types = "".join('<option value="%s">%s</option>' % (esc(t), esc_text(t)) for t in OPP_TYPES)
+    js = (VACANCY_FORM_JS.replace("__KEY__", W3F_ACCESS_KEY)
+          .replace("__ENDPOINT__", W3F_ENDPOINT)
+          .replace("__THANKS__", link(OPP_THANKS_PATH, path)))
+    body = (crumbs(path, "Post a vacancy")
+            + '<article class="prose"><h1>Post a vacancy</h1>'
+            + '<p>Hospitals and employers: use this form to submit an anaesthesia or perioperative vacancy. '
+              'Submissions are reviewed before anything is published; nothing auto-publishes. '
+              'Approved listings appear on the <a href="%s">Opportunities board</a>.</p>' % link(OPP_BOARD_PATH, path)
+            + trust_note_html(path)
+            + "</article>"
+            + '<form id="vacancy-form" class="vacancy-form" novalidate action="' + W3F_ENDPOINT + '" method="POST">'
+            + '<div class="form-grid">'
+            + '<label>Hospital name<input type="text" name="hospital_name" required></label>'
+            + '<label>State<select name="state" required><option value="">Select a state</option>' + states + '</select></label>'
+            + '<label>Contact name<input type="text" name="contact_name" required></label>'
+            + '<label>Work email<input type="email" name="work_email" required></label>'
+            + '<label>Role title<input type="text" name="role_title" required></label>'
+            + '<label>Type<select name="type" required><option value="">Select a type</option>' + types + '</select></label>'
+            + '<label>Contract length (optional)<input type="text" name="contract_length"></label>'
+            + '<label>How to apply (email address or URL)<input type="text" name="how_to_apply" required></label>'
+            + '<label>Application deadline<input type="date" name="deadline" required></label>'
+            + '</div>'
+            + '<label>Role description<textarea name="description" rows="8" required></textarea></label>'
+            + '<label class="consent"><input type="checkbox" name="consent" required>'
+            + '<span>I confirm I am authorised to post this vacancy on behalf of the hospital, and I have read the <a href="%s">privacy policy</a>.</span></label>' % link("/privacy/", path)
+            + '<p class="hp-wrap"><label>Leave this field empty<input class="hp-field" type="text" name="botcheck" tabindex="-1" autocomplete="off"></label></p>'
+            + '<input type="hidden" name="referrer" value="">'
+            + '<input type="hidden" name="utm_source" value="">'
+            + '<input type="hidden" name="utm_medium" value="">'
+            + '<input type="hidden" name="utm_campaign" value="">'
+            + '<p id="vacancy-error" class="form-error" hidden></p>'
+            + '<button type="submit">Submit for review</button>'
+            + "</form>"
+            + '<script>' + js + "</script>")
+    return shell(path, "Post a vacancy | " + SITE_NAME,
+                 "Hospitals: submit an anaesthesia or perioperative vacancy to the anaesthesia.ng opportunities board. Submissions are reviewed before publishing.",
+                 body, active="/opportunities/")
+
+
+def post_vacancy_thanks_page(path):
+    body = (crumbs(path, "Thank you")
+            + '<section class="section"><div class="wrap prose">'
+            + '<h1>Thank you</h1>'
+            + '<p>Your vacancy submission has been received. Every submission is reviewed before it is published; '
+              'nothing auto-publishes. If the listing is approved, it will appear on the '
+              '<a href="%s">Opportunities board</a> with a link back to your apply method.</p>' % link(OPP_BOARD_PATH, path)
+            + trust_note_html(path)
+            + "</div></section>"
+            + '<script>if(window.Analytics){window.Analytics.track("vacancy_submitted");}</script>')
+    return shell(path, "Thank you | " + SITE_NAME, "Vacancy submission received for review.", body, active="/opportunities/")
+
+
 def write(path, content):
     full = os.path.join(OUT, path.lstrip("/"))
     os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -496,6 +817,14 @@ def main():
         active = "/" + path.strip("/").split("/")[0] + "/" if path.count("/") > 2 else path
         write(path, shell(path, p["title"] + " | " + SITE_NAME, p.get("excerpt", DESCRIPTION), body, active=active, demo=p.get("demo") == "true"))
 
+    # opportunity board (OpportunityBoard v0)
+    opps = load_opportunities()
+    write(OPP_BOARD_PATH, opportunities_board(OPP_BOARD_PATH, opps))
+    for o in opps:
+        write("/opportunities/%s/" % o["slug"], opportunity_page(o))
+    write(OPP_FORM_PATH, post_vacancy_page(OPP_FORM_PATH))
+    write(OPP_THANKS_PATH, post_vacancy_thanks_page(OPP_THANKS_PATH))
+
     # search
     idx_entries = [{"title": a["title"], "url": a["path"].lstrip("/"), "category": a.get("category", "Article"), "excerpt": a.get("excerpt", "")} for a in articles]
     idx_entries += [{"title": n["title"], "url": n["path"].lstrip("/"), "category": "Clinical note", "excerpt": n.get("excerpt", "")} for n in notes]
@@ -517,7 +846,8 @@ def main():
     write("/404/", nf)
 
     # sitemap + robots
-    urls = ["/"] + [a["path"] for a in articles] + [n["path"] for n in notes] + [n["path"] for n in news] + [p["path"] for p in pages] + ["/articles/category/%s/" % slugify(c) for c in CATEGORIES] + ["/search/"]
+    urls = ["/"] + [a["path"] for a in articles] + [n["path"] for n in notes] + [n["path"] for n in news] + [p["path"] for p in pages] + ["/articles/category/%s/" % slugify(c) for c in CATEGORIES] + ["/search/"] \
+          + [OPP_BOARD_PATH, OPP_FORM_PATH, OPP_THANKS_PATH] + ["/opportunities/%s/" % o["slug"] for o in opps]
     sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
