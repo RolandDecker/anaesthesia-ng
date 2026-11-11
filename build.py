@@ -261,11 +261,10 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
         <a href="{link("/study-resources/", path)}">Study resources</a>
         <a href="{link("/privacy/", path)}">Privacy</a>
         <a href="{link("/disclaimer/", path)}">Disclaimer</a>
-        <a href="https://github.com/RolandDecker/anaesthesia-ng">Source on GitHub</a>
       </nav>
     </div>
 
-    <p class="footer-note">&copy; 2026 anaesthesia.ng. Independent and not affiliated with WACS or NPMCN. This site is a static build maintained in a GitHub repository; the repository holds the source and change history.</p>
+    <p class="footer-note">&copy; 2026 anaesthesia.ng. Independent and not affiliated with WACS or NPMCN.</p>
   </div>
 </footer>
 </body>
@@ -855,9 +854,6 @@ def main():
     sm.append("</urlset>")
     write("/sitemap.xml", "\n".join(sm))
     write("/robots.txt", "User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n" % SITE_URL)
-
-    # custom domain for GitHub Pages (apex): picked up by the Pages deployment
-    write("/CNAME", "anaesthesia.ng\n")
 
     n_html = len(urls) + 1
     print("built %s pages into docs/" % n_html)
