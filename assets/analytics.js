@@ -189,12 +189,12 @@
   }
 
   /* ---- consent banner (choice stored in localStorage) ---- */
-  var BANNER_CSS = "#ana-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#0F161C;color:#EBEFF2;padding:16px 24px;font:400 14px/22px system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;box-shadow:0 -4px 16px rgba(0,0,0,.35);margin:0}"
+  var BANNER_CSS = "#ana-consent{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:var(--bg,#fff);color:var(--text,#1F262B);border-top:1px solid var(--border,#DDE1E3);box-shadow:0 -4px 16px rgba(17,22,26,.08);padding:16px 24px;font:400 14px/22px var(--font-sans,system-ui),sans-serif;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;margin:0}"
     + "#ana-consent p{margin:0;max-width:640px}"
-    + "#ana-consent a{color:#EBEFF2;text-decoration:underline}"
-    + "#ana-consent button{font:600 14px/22px system-ui,sans-serif;padding:10px 20px;border:2px solid #EBEFF2;border-radius:0;cursor:pointer}"
-    + "#ana-consent .ana-accept{background:#EBEFF2;color:#0F161C}"
-    + "#ana-consent .ana-decline{background:transparent;color:#EBEFF2}";
+    + "#ana-consent a{color:var(--action,#0B5D5B);text-decoration:underline}"
+    + "#ana-consent button{font:700 14px/22px var(--font-sans,system-ui),sans-serif;padding:10px 20px;border:1px solid var(--action,#0B5D5B);border-radius:6px;cursor:pointer}"
+    + "#ana-consent .ana-accept{background:var(--action,#0B5D5B);color:var(--n-0,#fff)}"
+    + "#ana-consent .ana-decline{background:transparent;color:var(--action,#0B5D5B)}";
 
   function wireBanner() {
     if (readConsent()) { return; }

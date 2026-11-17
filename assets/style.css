@@ -486,6 +486,7 @@ form label > textarea { min-height: 11rem; }
 }
 .site-footer a:hover { color: var(--brand-100); }
 .site-footer :focus-visible { outline-color: var(--n-0); }
+.site-footer .wordmark span { color: var(--n-0); }
 .footer-grid {
   display: grid;
   gap: var(--space-8);
