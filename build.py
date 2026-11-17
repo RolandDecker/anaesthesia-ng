@@ -745,6 +745,577 @@ def post_vacancy_thanks_page(path):
     return shell(path, "Thank you | " + SITE_NAME, "Vacancy submission received for review.", body, active="/opportunities/")
 
 
+def styleguide_html():
+    path = "/styleguide/"
+    tokens_link = link("/assets/tokens.css", path)
+    base_link = link("/assets/base.css", path)
+    favicon = link("/assets/favicon.svg", path)
+
+    neutrals = [
+        ("--n-0", "#FFFFFF", "Page background, light contrast"),
+        ("--n-50", "#F7F8F8", "Alternate section band, subtle background"),
+        ("--n-100", "#EEF0F1", "Badge backgrounds, skeleton loaders"),
+        ("--n-200", "#DDE1E3", "Dividers, card borders"),
+        ("--n-300", "#C3C9CD", "Input borders"),
+        ("--n-400", "#9AA3A9", "Decorative elements (25px+ only)"),
+        ("--n-500", "#67727A", "Meta text, captions"),
+        ("--n-600", "#4F5A62", "Secondary text"),
+        ("--n-700", "#353E45", "Neutral badge text"),
+        ("--n-800", "#1F262B", "Body text"),
+        ("--n-900", "#11161A", "Headings, strong text"),
+    ]
+
+    brand = [
+        ("--brand-50", "#E8F4F3", "Tinted callout and selected backgrounds"),
+        ("--brand-100", "#CFE8E6", "Brand tint light"),
+        ("--brand-300", "#7FBFBA", "Feature card hover border"),
+        ("--brand-500", "#1F8A85", "Decoration (25px+ only)"),
+        ("--brand-700", "#0B5D5B", "Action, links, active nav, focus"),
+        ("--brand-800", "#084745", "Action hover"),
+        ("--brand-900", "#05302F", "Footer background, action pressed"),
+    ]
+
+    accent = [
+        ("--accent-50", "#FEF3E2", "New badges, exam tips background"),
+        ("--accent-700", "#B45309", "New badges, exam tips text/border"),
+    ]
+
+    status = [
+        ("--success", "#1B7F3B", "Correct answer, success text"),
+        ("--success-bg", "#EAF6EE", "Success background"),
+        ("--error", "#B42318", "Incorrect answer, error text"),
+        ("--error-bg", "#FDECEA", "Error background"),
+    ]
+
+    semantic = [
+        ("--bg", "var(--n-0)", "Page background"),
+        ("--bg-subtle", "var(--n-50)", "Alternate section band, table header"),
+        ("--text-strong", "var(--n-900)", "Headings"),
+        ("--text", "var(--n-800)", "Body text"),
+        ("--text-secondary", "var(--n-600)", "Secondary text"),
+        ("--text-muted", "var(--n-500)", "Meta text"),
+        ("--border", "var(--n-200)", "Dividers, card borders"),
+        ("--border-input", "var(--n-300)", "Input borders"),
+        ("--action", "var(--brand-700)", "Primary buttons, links, active nav"),
+        ("--action-hover", "var(--brand-800)", "Hover state for action"),
+        ("--action-pressed", "var(--brand-900)", "Pressed state for action"),
+        ("--focus", "var(--brand-700)", "Focus ring color"),
+    ]
+
+    def swatches_html(items, is_var=False):
+        out = []
+        for name, val, desc in items:
+            border_css = "border: 1px solid var(--border);" if ("#FFF" in val or "n-0" in val or "50" in val or "bg" in name) else ""
+            out.append(f"""
+            <div class="sg-swatch">
+              <div class="sg-swatch-color" style="background-color: {name if not is_var else val}; {border_css}"></div>
+              <div class="sg-swatch-info">
+                <span class="sg-swatch-name">{esc_text(name)}</span>
+                <span class="sg-swatch-val">{esc_text(val)}</span>
+                <span class="sg-swatch-desc">{esc_text(desc)}</span>
+              </div>
+            </div>""")
+        return "".join(out)
+
+    spacing = [
+        ("--space-1", "0.25rem (4px)"),
+        ("--space-2", "0.5rem (8px)"),
+        ("--space-3", "0.75rem (12px)"),
+        ("--space-4", "1rem (16px)"),
+        ("--space-6", "1.5rem (24px)"),
+        ("--space-8", "2rem (32px)"),
+        ("--space-12", "3rem (48px)"),
+        ("--space-16", "4rem (64px)"),
+    ]
+
+    spacing_rows = "".join(f"""
+    <div class="sg-spacing-row">
+      <span class="sg-spacing-label">{s_name} ({s_val})</span>
+      <div class="sg-spacing-bar" style="width: var({s_name});"></div>
+    </div>""" for s_name, s_val in spacing)
+
+    html_out = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Styleguide | {SITE_NAME}</title>
+<link rel="icon" type="image/svg+xml" href="{favicon}">
+<link rel="stylesheet" href="{tokens_link}">
+<link rel="stylesheet" href="{base_link}">
+<style>
+/* Styleguide showcase layout rules: uses tokens exclusively */
+.sg-header {{
+  border-bottom: 1px solid var(--border);
+  padding-block: var(--space-8);
+  margin-bottom: var(--space-8);
+}}
+.sg-section {{
+  padding-block: var(--space-8);
+  border-bottom: 1px solid var(--border);
+}}
+.sg-section:last-of-type {{
+  border-bottom: 0;
+}}
+.sg-section-title {{
+  margin-bottom: var(--space-2);
+}}
+.sg-section-desc {{
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+  max-width: 65ch;
+}}
+.sg-swatch-grid {{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-4);
+}}
+.sg-swatch {{
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg);
+}}
+.sg-swatch-color {{
+  height: 56px;
+  width: 100%;
+}}
+.sg-swatch-info {{
+  padding: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+}}
+.sg-swatch-name {{
+  font-weight: 700;
+  color: var(--text-strong);
+  display: block;
+}}
+.sg-swatch-val {{
+  color: var(--text-muted);
+  display: block;
+  font-variant-numeric: tabular-nums;
+}}
+.sg-swatch-desc {{
+  color: var(--text-secondary);
+  display: block;
+  margin-top: var(--space-1);
+}}
+.sg-spacing-row {{
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+}}
+.sg-spacing-label {{
+  width: 150px;
+  color: var(--text-strong);
+  font-weight: 700;
+  flex-shrink: 0;
+}}
+.sg-spacing-bar {{
+  background: var(--action);
+  height: 20px;
+  border-radius: var(--radius-sm);
+}}
+.sg-radius-box {{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--space-6);
+  border: 2px solid var(--border);
+  background: var(--bg-subtle);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  margin-right: var(--space-4);
+  margin-bottom: var(--space-4);
+}}
+.sg-type-row {{
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px dashed var(--border);
+}}
+.sg-type-row:last-child {{
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}}
+.sg-type-meta {{
+  margin-bottom: var(--space-2);
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}}
+.sg-badge {{
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  background: var(--n-100);
+  color: var(--n-700);
+}}
+.sg-badge-brand {{
+  background: var(--brand-50);
+  color: var(--action);
+}}
+.sg-badge-accent {{
+  background: var(--accent-50);
+  color: var(--accent-700);
+}}
+.sg-badge-success {{
+  background: var(--success-bg);
+  color: var(--success);
+}}
+.sg-badge-error {{
+  background: var(--error-bg);
+  color: var(--error);
+}}
+.sg-grid-cell {{
+  background: var(--brand-50);
+  border: 1px solid var(--brand-300);
+  padding: var(--space-3) var(--space-2);
+  text-align: center;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--action);
+  border-radius: var(--radius-sm);
+}}
+.sg-card {{
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  margin-top: var(--space-4);
+}}
+.sg-card.on-dark {{
+  background: var(--brand-900);
+  color: var(--n-0);
+  border-color: var(--brand-800);
+}}
+.sg-card.on-dark h3,
+.sg-card.on-dark p {{
+  color: var(--n-0);
+}}
+.sg-btn-primary {{
+  background: var(--action);
+  color: var(--n-0);
+  border: 1px solid var(--action);
+  text-decoration: none;
+}}
+.sg-btn-primary:hover {{
+  background: var(--action-hover);
+  color: var(--n-0);
+  text-decoration: none;
+}}
+.sg-btn-dark {{
+  background: var(--n-0);
+  color: var(--brand-900);
+  border: 1px solid var(--n-0);
+  text-decoration: none;
+}}
+.sg-table {{
+  margin-top: var(--space-4);
+  font-size: var(--text-base);
+}}
+.sg-table th, .sg-table td {{
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}}
+.sg-table th {{
+  background: var(--bg-subtle);
+  font-weight: 700;
+  color: var(--text-strong);
+}}
+.sg-table tr:hover td {{
+  background: var(--brand-50);
+}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to styleguide content</a>
+
+<header class="container sg-header">
+  <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:var(--space-4);">
+    <div>
+      <span class="role-h2" style="display:block;">anaesthesia.ng Design System</span>
+      <p class="role-meta">Step 1: Tokens, Base Typography, Self-Hosted Fonts &amp; Layout</p>
+    </div>
+    <span class="sg-badge sg-badge-accent">noindex</span>
+  </div>
+</header>
+
+<main id="main" class="container">
+
+  <!-- 1. Fonts verification -->
+  <section class="sg-section" aria-labelledby="sec-fonts">
+    <h2 id="sec-fonts" class="role-h2 sg-section-title">1. Self-Hosted Variable Fonts</h2>
+    <p class="sg-section-desc">Loaded from <code>assets/fonts/</code> as variable WOFF2 files (Latin subset, total under 150 KB) with <code>font-display: swap</code> and size-adjusted fallbacks.</p>
+
+    <div class="sg-grid-demo" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:var(--space-4); margin-bottom:var(--space-4);">
+      <div style="padding:var(--space-4); border:1px solid var(--border); border-radius:var(--radius); background:var(--bg);">
+        <span class="sg-badge sg-badge-brand" style="margin-bottom:var(--space-2);">Sans UI (weights 200–800)</span>
+        <p style="font-family:var(--font-sans); font-size:var(--text-lg); font-weight:700; color:var(--text-strong);">Atkinson Hyperlegible Next</p>
+        <p class="role-meta">Variable font file: <code>AtkinsonHyperlegibleNext-Variable.woff2</code> (34 KB). Designed for character distinction (0 and O, 1 and l and I).</p>
+      </div>
+      <div style="padding:var(--space-4); border:1px solid var(--border); border-radius:var(--radius); background:var(--bg);">
+        <span class="sg-badge sg-badge-brand" style="margin-bottom:var(--space-2);">Serif Editorial (weights 200–900)</span>
+        <p style="font-family:var(--font-serif); font-size:var(--text-lg); font-weight:600; color:var(--text-strong);">Literata &amp; Literata Italic</p>
+        <p class="role-meta">Variable font files: <code>Literata-Variable.woff2</code> (52 KB) and <code>Literata-Italic-Variable.woff2</code> (54 KB). Designed for sustained on-screen reading.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Typography scale & roles -->
+  <section class="sg-section" aria-labelledby="sec-type">
+    <h2 id="sec-type" class="role-h2 sg-section-title">2. Typography Modular Scale &amp; Type Roles</h2>
+    <p class="sg-section-desc">Modular scale ratio 1.25, base 16 px. Serif for h1, h2, and article body; Sans for navigation, UI body, buttons, cards, and labels.</p>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">Display (Home hero only)</span>
+        <span class="role-meta">Serif 600 &middot; Mobile xl (31px), Desktop 3xl (49px) &middot; Line height 1.15 &middot; Tracking -0.01em</span>
+      </div>
+      <p class="role-display">The anaesthesia reference for Nigeria.</p>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">h1</span>
+        <span class="role-meta">Serif 600 &middot; Mobile lg (25px), Desktop 2xl (39px) &middot; Line height 1.15 &middot; Tracking -0.01em</span>
+      </div>
+      <h1 class="role-h1">How to build a study plan for the WACS primary examination</h1>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">h2</span>
+        <span class="role-meta">Serif 600 &middot; Mobile md (20px), Desktop lg (25px) &middot; Line height 1.2 &middot; Tracking 0</span>
+      </div>
+      <h2 class="role-h2">Pre-oxygenation before induction: the core physiological idea</h2>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">h3</span>
+        <span class="role-meta">Sans 700 &middot; Mobile &amp; Desktop md (20px) &middot; Line height 1.3 &middot; Tracking 0</span>
+      </div>
+      <h3 class="role-h3">Anaesthesia machine safety check: daily verification structure</h3>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">Lede</span>
+        <span class="role-meta">Sans 400 &middot; Mobile &amp; Desktop md (20px) &middot; Line height 1.5 &middot; Tracking 0</span>
+      </div>
+      <p class="role-lede">Exam preparation, clinical notes, and verified vacancies for Nigerian anaesthetists and postgraduate trainees across West Africa.</p>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">UI body</span>
+        <span class="role-meta">Sans 400 &middot; Mobile &amp; Desktop base (16px) &middot; Line height 1.6 &middot; Tracking 0</span>
+      </div>
+      <p class="role-body">anaesthesia.ng is an independent academic resource. Official dates and regulations remain with WACS and NPMCN. Study frameworks and peer-reviewed clinical notes live here as a durable, searchable reference.</p>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">Article body</span>
+        <span class="role-meta">Serif 400 &middot; Off-scale read (18px) &middot; Line height 1.7 &middot; Tracking 0</span>
+      </div>
+      <p class="role-article-body">Arterial blood gas sampling remains the clinical reference for evaluating alveolar ventilation and acid-base disturbance. When interpreting acute hypercapnia, the compensation slope must be calculated from baseline values rather than arbitrary thresholds.</p>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">Meta and captions</span>
+        <span class="role-meta">Sans 400 &middot; Mobile &amp; Desktop xs (13px) &middot; Line height 1.4 &middot; Tracking 0</span>
+      </div>
+      <p class="role-meta">By J. R. Decker, Aminu Kano Teaching Hospital &middot; Published 1 November 2026 &middot; Last reviewed 15 November 2026</p>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">Button</span>
+        <span class="role-meta">Sans 700 &middot; Mobile &amp; Desktop base (16px) &middot; Line height 1 &middot; Tracking 0</span>
+      </div>
+      <div style="display:flex; gap:var(--space-3); flex-wrap:wrap; align-items:center;">
+        <button type="button" class="sg-btn-primary">Start the question bank</button>
+        <button type="button" style="background:var(--n-0); color:var(--action); border:1px solid var(--action);">Browse vacancies</button>
+      </div>
+    </div>
+
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span class="sg-badge sg-badge-brand">Tabular figures &amp; Links</span>
+        <span class="role-meta">font-variant-numeric: tabular-nums &middot; 1px underline, 0.15em offset</span>
+      </div>
+      <p>Body links are styled in <code>--action</code>: <a href="#sec-palette">Jump to Palette Swatches</a> or <a href="#sec-grid">inspect the 12-column Grid</a>.</p>
+      <div style="overflow-x:auto;">
+        <table class="sg-table tabular-nums">
+          <thead>
+            <tr>
+              <th>Topic / Candidate</th>
+              <th>Score</th>
+              <th>Target</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>WACS Primary SBA Practice 01</td>
+              <td>78.5%</td>
+              <td>75.0%</td>
+              <td>2026-11-10</td>
+              <td><span class="sg-badge sg-badge-success">Pass</span></td>
+            </tr>
+            <tr>
+              <td>Physiology: Oxygen Cascade &amp; DO2</td>
+              <td>84.0%</td>
+              <td>80.0%</td>
+              <td>2026-11-12</td>
+              <td><span class="sg-badge sg-badge-success">Pass</span></td>
+            </tr>
+            <tr>
+              <td>Equipment &amp; Physics: Vaporizers</td>
+              <td>52.0%</td>
+              <td>70.0%</td>
+              <td>2026-11-15</td>
+              <td><span class="sg-badge sg-badge-error">Review</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Palette -->
+  <section class="sg-section" id="sec-palette" aria-labelledby="sec-palette-title">
+    <h2 id="sec-palette-title" class="role-h2 sg-section-title">3. Palette &amp; Contrast Ramps</h2>
+    <p class="sg-section-desc">One brand hue (deep teal), a cool neutral ramp, one amber accent, and status colors. Components reference semantic tokens only.</p>
+
+    <h3 class="role-h3" style="margin-top:var(--space-6); margin-bottom:var(--space-3);">Semantic Layer</h3>
+    <div class="sg-swatch-grid">
+      {swatches_html(semantic, is_var=True)}
+    </div>
+
+    <h3 class="role-h3" style="margin-top:var(--space-6); margin-bottom:var(--space-3);">Neutrals (Cool Ramp)</h3>
+    <div class="sg-swatch-grid">
+      {swatches_html(neutrals)}
+    </div>
+
+    <h3 class="role-h3" style="margin-top:var(--space-6); margin-bottom:var(--space-3);">Brand (Deep Teal)</h3>
+    <div class="sg-swatch-grid">
+      {swatches_html(brand)}
+    </div>
+
+    <h3 class="role-h3" style="margin-top:var(--space-6); margin-bottom:var(--space-3);">Accent (Amber) &amp; Status</h3>
+    <div class="sg-swatch-grid">
+      {swatches_html(accent)}
+      {swatches_html(status)}
+    </div>
+  </section>
+
+  <!-- 4. Spacing, shape & elevation -->
+  <section class="sg-section" aria-labelledby="sec-space">
+    <h2 id="sec-space" class="role-h2 sg-section-title">4. Spacing, Shape &amp; Elevation</h2>
+    <p class="sg-section-desc">Base unit 4 px: <code>4k</code> px with <code>k &isin; {{1, 2, 3, 4, 6, 8, 12, 16}}</code>. Radius tokens by hierarchy. Shadow pop for dialogs and menus only.</p>
+
+    <h3 class="role-h3" style="margin-bottom:var(--space-3);">Spacing Scale</h3>
+    <div style="background:var(--bg-subtle); padding:var(--space-4); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:var(--space-6);">
+      {spacing_rows}
+    </div>
+
+    <h3 class="role-h3" style="margin-bottom:var(--space-3);">Border Radius</h3>
+    <div>
+      <div class="sg-radius-box" style="border-radius:var(--radius-sm);">--radius-sm (4px) &middot; Badges</div>
+      <div class="sg-radius-box" style="border-radius:var(--radius);">--radius (6px) &middot; Buttons / Inputs</div>
+      <div class="sg-radius-box" style="border-radius:var(--radius-lg);">--radius-lg (10px) &middot; Panels / Dialogs</div>
+    </div>
+
+    <h3 class="role-h3" style="margin-top:var(--space-6); margin-bottom:var(--space-3);">Elevation: Shadow Pop</h3>
+    <div style="background:var(--bg-subtle); padding:var(--space-6); border:1px solid var(--border); border-radius:var(--radius);">
+      <div style="max-width:360px; padding:var(--space-4); background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-pop);">
+        <strong style="color:var(--text-strong); display:block; margin-bottom:var(--space-1);">Menu / Dialog surface</strong>
+        <p class="role-meta"><code>--shadow-pop: 0 4px 16px rgba(17, 22, 26, 0.08)</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Layout & grid -->
+  <section class="sg-section" id="sec-grid" aria-labelledby="sec-grid-title">
+    <h2 id="sec-grid-title" class="role-h2 sg-section-title">5. Layout, Container &amp; Grid</h2>
+    <p class="sg-section-desc">Max container width 1120 px. Gutters 16 px mobile, 24 px desktop. 4 columns mobile, 8 at 768 px, 12 at 1120 px.</p>
+
+    <div class="grid" style="margin-bottom:var(--space-4);">
+      <div class="sg-grid-cell col-span-1">1</div>
+      <div class="sg-grid-cell col-span-1">2</div>
+      <div class="sg-grid-cell col-span-1">3</div>
+      <div class="sg-grid-cell col-span-1">4</div>
+      <div class="sg-grid-cell col-span-1">5</div>
+      <div class="sg-grid-cell col-span-1">6</div>
+      <div class="sg-grid-cell col-span-1">7</div>
+      <div class="sg-grid-cell col-span-1">8</div>
+      <div class="sg-grid-cell col-span-1">9</div>
+      <div class="sg-grid-cell col-span-1">10</div>
+      <div class="sg-grid-cell col-span-1">11</div>
+      <div class="sg-grid-cell col-span-1">12</div>
+    </div>
+
+    <div class="grid">
+      <div class="sg-grid-cell col-span-4 col-md-span-4 col-lg-span-6" style="padding:var(--space-4);">
+        <strong>Span 6 of 12 (Desktop)</strong>
+        <p class="role-meta">Span 4 (Tablet) &middot; Span 4 (Mobile)</p>
+      </div>
+      <div class="sg-grid-cell col-span-4 col-md-span-4 col-lg-span-6" style="padding:var(--space-4);">
+        <strong>Span 6 of 12 (Desktop)</strong>
+        <p class="role-meta">Span 4 (Tablet) &middot; Span 4 (Mobile)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Focus & accessibility -->
+  <section class="sg-section" aria-labelledby="sec-a11y">
+    <h2 id="sec-a11y" class="role-h2 sg-section-title">6. Focus Styles &amp; Accessibility</h2>
+    <p class="sg-section-desc">Visible focus ring is 2 px solid <code>--focus</code> with 2 px offset. On dark surfaces (<code>--brand-900</code>), focus ring automatically switches to <code>--n-0</code>.</p>
+
+    <div class="sg-card">
+      <h3 class="role-h3" style="margin-bottom:var(--space-2);">Focus on Light Surface</h3>
+      <p class="role-meta" style="margin-bottom:var(--space-4);">Press Tab to verify focus ring (2 px solid --brand-700, 2 px offset):</p>
+      <div style="display:flex; gap:var(--space-4); align-items:center; flex-wrap:wrap;">
+        <button type="button" class="sg-btn-primary">Focus Me (Light)</button>
+        <a href="#main" style="padding:var(--space-2);">Focusable Link</a>
+      </div>
+    </div>
+
+    <div class="sg-card on-dark">
+      <h3 class="role-h3" style="margin-bottom:var(--space-2); color:var(--n-0);">Focus on Dark Surface (--brand-900)</h3>
+      <p class="role-meta" style="margin-bottom:var(--space-4); color:var(--brand-100);">Press Tab to verify focus ring switches to white (--n-0):</p>
+      <div style="display:flex; gap:var(--space-4); align-items:center; flex-wrap:wrap;">
+        <button type="button" class="sg-btn-dark">Focus Me (Dark)</button>
+        <a href="#main" style="color:var(--n-0); padding:var(--space-2);">Focusable White Link</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="container" style="border-top:1px solid var(--border); padding-block:var(--space-8); margin-top:var(--space-12);">
+  <p class="role-meta">&copy; 2026 {SITE_NAME} &middot; Design System &amp; Tokens &middot; <span class="sg-badge sg-badge-accent">noindex</span></p>
+</footer>
+
+</body>
+</html>"""
+    return html_out
+
+
 def write(path, content):
     full = os.path.join(OUT, path.lstrip("/"))
     os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -759,6 +1330,14 @@ def main():
         shutil.rmtree(OUT)
     os.makedirs(OUT)
     shutil.copytree(os.path.join(ROOT, "assets"), os.path.join(OUT, "assets"))
+
+    # copy token and base CSS from src/styles
+    src_styles = os.path.join(ROOT, "src", "styles")
+    if os.path.exists(src_styles):
+        for fn in ("tokens.css", "base.css"):
+            src_file = os.path.join(src_styles, fn)
+            if os.path.exists(src_file):
+                shutil.copyfile(src_file, os.path.join(OUT, "assets", fn))
 
     items = load_content()
     for it in items:
@@ -844,6 +1423,9 @@ def main():
                '<a data-target="articles/" href="articles/">article index</a>.</p></div></section>'
                + fix404)
     write("/404/", nf)
+
+    # /styleguide/ (Step 1 tokens and base styleguide; noindex, excluded from sitemap and search)
+    write("/styleguide/", styleguide_html())
 
     # sitemap + robots
     urls = ["/"] + [a["path"] for a in articles] + [n["path"] for n in notes] + [n["path"] for n in news] + [p["path"] for p in pages] + ["/articles/category/%s/" % slugify(c) for c in CATEGORIES] + ["/search/"] \

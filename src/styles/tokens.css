@@ -1,0 +1,103 @@
+/* ==========================================================================
+   anaesthesia.ng Design Tokens
+   Specification: DESIGN.md Sections 2 to 4
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     Section 2: Typography
+     Modular scale ratio 1.25, base 16 px: s_n = 16 * 1.25^n px rounded
+     ------------------------------------------------------------------------ */
+  --font-sans: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Atkinson-fallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-serif: "Literata", "Literata-fallback", Georgia, "Times New Roman", serif;
+
+  --text-xs: 0.8125rem;   /* 13 px: meta, captions, badges */
+  --text-base: 1rem;       /* 16 px: UI text, body */
+  --text-md: 1.25rem;      /* 20 px: lede, h3, list titles */
+  --text-lg: 1.5625rem;    /* 25 px: h1 mobile, h2 desktop */
+  --text-xl: 1.953rem;     /* 31 px: display mobile */
+  --text-2xl: 2.441rem;    /* 39 px: h1 desktop */
+  --text-3xl: 3.052rem;    /* 49 px: display desktop */
+  --text-read: 1.125rem;   /* 18 px: article body only */
+
+  /* ------------------------------------------------------------------------
+     Section 3: Palette
+     Deep teal brand hue, cool neutral ramp, amber accent, status colors
+     ------------------------------------------------------------------------ */
+  /* Neutrals */
+  --n-0: #FFFFFF;
+  --n-50: #F7F8F8;
+  --n-100: #EEF0F1;
+  --n-200: #DDE1E3;
+  --n-300: #C3C9CD;
+  --n-400: #9AA3A9;
+  --n-500: #67727A;
+  --n-600: #4F5A62;
+  --n-700: #353E45;
+  --n-800: #1F262B;
+  --n-900: #11161A;
+
+  /* Brand */
+  --brand-50: #E8F4F3;
+  --brand-100: #CFE8E6;
+  --brand-300: #7FBFBA;
+  --brand-500: #1F8A85;
+  --brand-700: #0B5D5B;
+  --brand-800: #084745;
+  --brand-900: #05302F;
+
+  /* Accent */
+  --accent-50: #FEF3E2;
+  --accent-700: #B45309;
+
+  /* Status */
+  --success: #1B7F3B;
+  --success-bg: #EAF6EE;
+  --error: #B42318;
+  --error-bg: #FDECEA;
+
+  /* Semantic layer: components reference these */
+  --bg: var(--n-0);
+  --bg-subtle: var(--n-50);
+  --text-strong: var(--n-900);
+  --text: var(--n-800);
+  --text-secondary: var(--n-600);
+  --text-muted: var(--n-500);
+  --border: var(--n-200);
+  --border-input: var(--n-300);
+  --action: var(--brand-700);
+  --action-hover: var(--brand-800);
+  --action-pressed: var(--brand-900);
+  --focus: var(--brand-700);
+
+  /* ------------------------------------------------------------------------
+     Section 4: Spacing, shape, layout and motion
+     Base unit 4 px: 4k px with k in {1, 2, 3, 4, 6, 8, 12, 16}
+     ------------------------------------------------------------------------ */
+  /* Spacing */
+  --space-1: 0.25rem;  /* 4 px */
+  --space-2: 0.5rem;   /* 8 px */
+  --space-3: 0.75rem;  /* 12 px */
+  --space-4: 1rem;     /* 16 px */
+  --space-6: 1.5rem;   /* 24 px */
+  --space-8: 2rem;     /* 32 px */
+  --space-12: 3rem;    /* 48 px */
+  --space-16: 4rem;    /* 64 px */
+
+  /* Shape & Elevation */
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --shadow-pop: 0 4px 16px rgba(17, 22, 26, 0.08);
+
+  /* Layout */
+  --container-max: 1120px;
+  --gutter-mobile: 16px;
+  --gutter-desktop: 24px;
+  --reading-column: 680px;
+  --tap-target-min: 44px;
+
+  /* Motion */
+  --motion-duration: 150ms;
+  --motion-easing: ease-out;
+}
