@@ -802,13 +802,13 @@ def styleguide_html():
         ("--focus", "var(--brand-700)", "Focus ring color"),
     ]
 
-    def swatches_html(items, is_var=False):
+    def swatches_html(items):
         out = []
         for name, val, desc in items:
             border_css = "border: 1px solid var(--border);" if ("#FFF" in val or "n-0" in val or "50" in val or "bg" in name) else ""
             out.append(f"""
             <div class="sg-swatch">
-              <div class="sg-swatch-color" style="background-color: {name if not is_var else val}; {border_css}"></div>
+              <div class="sg-swatch-color" style="background-color: var({name}); {border_css}"></div>
               <div class="sg-swatch-info">
                 <span class="sg-swatch-name">{esc_text(name)}</span>
                 <span class="sg-swatch-val">{esc_text(val)}</span>
@@ -1018,14 +1018,22 @@ def styleguide_html():
   border: 1px solid var(--n-0);
   text-decoration: none;
 }}
-.sg-table {{
+.sg-table-container {{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
   margin-top: var(--space-4);
+}}
+.sg-table {{
+  width: 100%;
+  min-width: 520px;
   font-size: var(--text-base);
 }}
 .sg-table th, .sg-table td {{
   padding: var(--space-3) var(--space-4);
   text-align: left;
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }}
 .sg-table th {{
   background: var(--bg-subtle);
@@ -1157,7 +1165,7 @@ def styleguide_html():
         <span class="role-meta">font-variant-numeric: tabular-nums &middot; 1px underline, 0.15em offset</span>
       </div>
       <p>Body links are styled in <code>--action</code>: <a href="#sec-palette">Jump to Palette Swatches</a> or <a href="#sec-grid">inspect the 12-column Grid</a>.</p>
-      <div style="overflow-x:auto;">
+      <div class="sg-table-container" style="overflow-x:auto;">
         <table class="sg-table tabular-nums">
           <thead>
             <tr>
@@ -1203,7 +1211,7 @@ def styleguide_html():
 
     <h3 class="role-h3" style="margin-top:var(--space-6); margin-bottom:var(--space-3);">Semantic Layer</h3>
     <div class="sg-swatch-grid">
-      {swatches_html(semantic, is_var=True)}
+      {swatches_html(semantic)}
     </div>
 
     <h3 class="role-h3" style="margin-top:var(--space-6); margin-bottom:var(--space-3);">Neutrals (Cool Ramp)</h3>
