@@ -189,7 +189,9 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
     demo_html = ('<div class="demo-banner" role="note"><strong>Demonstration content.</strong> '
                  + esc_text(DEMO_NOTE) + "</div>") if demo else ""
     favicon = link("/assets/favicon.svg", path)
-    css_link = link("/assets/style.css", path) + "?v=4"
+    css_link = link("/assets/style.css", path) + "?v=5"
+    tokens_link = link("/assets/tokens.css", path) + "?v=1"
+    base_link = link("/assets/base.css", path) + "?v=1"
     analytics_link = link("/assets/analytics.js", path)
     home_link = link("/", path)
     search_link = link("/search/", path)
@@ -200,17 +202,16 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
-<meta name="theme-color" content="#0F161C">
+<meta name="theme-color" content="#05302F">
 <link rel="canonical" href="{canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{SITE_NAME}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{canonical}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="{favicon}">
+<link rel="stylesheet" href="{tokens_link}">
+<link rel="stylesheet" href="{base_link}">
 <link rel="stylesheet" href="{css_link}">
 <script src="{analytics_link}"></script>
 {site_jsonld()}{extra_head}
