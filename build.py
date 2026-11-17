@@ -189,7 +189,7 @@ def shell(path, title, desc, body, active=None, demo=False, extra_head=""):
     demo_html = ('<div class="demo-banner" role="note"><strong>Demonstration content.</strong> '
                  + esc_text(DEMO_NOTE) + "</div>") if demo else ""
     favicon = link("/assets/favicon.svg", path)
-    css_link = link("/assets/style.css", path) + "?v=5"
+    css_link = link("/assets/style.css", path) + "?v=6"
     tokens_link = link("/assets/tokens.css", path) + "?v=1"
     base_link = link("/assets/base.css", path) + "?v=1"
     analytics_link = link("/assets/analytics.js", path)
